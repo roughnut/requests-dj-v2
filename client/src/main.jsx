@@ -1,0 +1,41 @@
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App.jsx'
+import './index.css'
+
+// import components from './pages/componentPage';
+// Repeat for each different page
+import Login from './pages/Login';
+import Signup from './pages/Signup';
+
+// Define the accessible routes, and which components respond to which URL
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />,
+    errorElement: <Error />,
+    children: [
+      // Add the children pages from the imports.
+      {
+        index: true,
+        element: <Home />,
+      },
+      {
+        path: '/login',
+        element: <Login />,
+      },
+      {
+        path: '/signup',
+        element: <Signup />,
+      },
+      {
+        path: '/event',
+        element: <Event />,
+      },
+    ],
+  },
+]);
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <RouterProvider router={router} />
+);
