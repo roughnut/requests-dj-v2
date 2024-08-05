@@ -3,10 +3,14 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
 
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
 // import components from './pages/componentPage';
 // Repeat for each different page
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import Event from './pages/Event';
+import Home from './pages/Home';
 
 // Define the accessible routes, and which components respond to which URL
 const router = createBrowserRouter([
