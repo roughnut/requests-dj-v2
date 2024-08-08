@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
@@ -76,3 +77,5 @@ export default function Login() {
     </div>
   );
 }
+
+export default Login;

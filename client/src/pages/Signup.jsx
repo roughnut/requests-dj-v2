@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { ADD_USER } from '../utils/mutations';
@@ -64,6 +65,9 @@ export default function Signup() {
         <button type="submit">Sign Up</button>
       </form>
       {error && <p>Signup failed</p>}
+
     </div>
   );
 }
+
+export default Signup;
