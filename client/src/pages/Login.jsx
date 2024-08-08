@@ -54,10 +54,11 @@ export default function Login() {
   }
 
   return (
-    <div>
-      <h1>Login</h1>
+    <div className='row justify-content-center'>
+      <h1 className='col-12'>Login</h1>
       <form onSubmit={handleFormSubmit}>
         <input
+          className='col-12 m-2'
           type="text"
           name="username"
           value={formState.username}
@@ -65,17 +66,16 @@ export default function Login() {
           placeholder="Username"
         />
         <input
+          className='col-12 m-2' 
           type="password"
           name="password"
           value={formState.password}
           onChange={handleChange}
           placeholder="Password"
         />
-        <button type="submit">Login</button>
+        <button className='col-12 m-2' type="submit">Login</button>
       </form>
-      {error && <p>Login failed</p>}
+      {error && <p className='col-12 m-2'>Login failed</p>}
     </div>
   );
 }
-
-export default Login;
