@@ -9,7 +9,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 // Repeat for each different page
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import Event from './pages/Event';
+import Events from './pages/Events.jsx';
 import Home from './pages/Home';
 
 // Define the accessible routes, and which components respond to which URL
@@ -33,8 +33,8 @@ const router = createBrowserRouter([
         element: <Signup />,
       },
       {
-        path: '/event',
-        element: <Event />,
+        path: '/events',
+        element: <Events />,
       },
     ],
   },
