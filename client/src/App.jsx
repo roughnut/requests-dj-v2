@@ -1,17 +1,41 @@
 import { Outlet } from 'react-router-dom';
-import Nav from './components/Navbar';
-import Footer from './components/Footer';
+
+import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+import { SongProvider } from './utils/GlobalState';
+
+// Create an HTTP link to the GraphQL server
+const httpLink = createHttpLink({
+  uri: '/graphql',
+});
+
+// Create a middleware to attach the JWT token to every request
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem('id_token');
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  };
+});
+
+// Create the Apollo Client instance
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: new InMemoryCache(),
+});
 
 function App() {
-  // The Outlet component will conditionally swap between the different pages according to the URL
   return (
-    <>
-      <Nav />
-      <main className="mx-3">
-        <Outlet />
-      </main>
-      <Footer />
-    </>
+    <ApolloProvider client={client}>
+      <SongProvider>
+        <main className="mx-3">
+          <Outlet />
+        </main>
+      </SongProvider>
+    </ApolloProvider>
+
   );
 }
 

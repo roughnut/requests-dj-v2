@@ -1,61 +1,79 @@
-import React, { useState } from 'react';
 
-function Login() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+import { useState, useEffect } from 'react';
+import { useMutation } from '@apollo/client';
+import { useNavigate } from 'react-router-dom';
+// LOGIN_USER for GraphQL
+import { LOGIN_USER } from '../utils/mutations';
+import { useSongContext } from '../utils/GlobalState';
+// LOGIN_USER uses LOGIN_ACTION as an alias for state
+import { LOGIN_USER as LOGIN_ACTION } from '../utils/actions';
 
-  const loginFormHandler = async (event) => {
-    event.preventDefault();
-
-    if (!username || !password) {
-      alert("Please fill in all fields.");
-      return;
+export default function Login() {
+  const [formState, setFormState] = useState({ username: '', password: '' });
+  const [login, { error }] = useMutation(LOGIN_USER);
+  const [state, dispatch] = useSongContext();
+  
+  // JW - not sure this is the best UI - if user is authenticated there should be no option to navigate to the login page - leaving it for now
+  const navigate = useNavigate();
+  useEffect(() => {
+    // If user is already authenticated, redirect to home page
+    if (state.isAuthenticated) {
+      navigate('/');
     }
+  }, [state.isAuthenticated, navigate]);
 
-    if (username && password) {
-      const response = await fetch("/api/users/login", {
-        method: "POST",
-        body: JSON.stringify({ username, password }),
-        headers: { "Content-Type": "application/json" },
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormState({
+      ...formState,
+      [name]: value,
+    });
+  };
+
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const { data } = await login({
+        variables: { ...formState },
       });
-
-      if (response.ok) {
-        document.location.replace("/");
-      } else {
-        alert("Incorrect Username or Password entered. Please try again.");
-      }
+      localStorage.setItem('id_token', data.login.token);
+      dispatch({
+        type: LOGIN_ACTION,
+        payload: data.login.user
+      });
+      // Redirect to home page after successful login
+      navigate('/');
+    } catch (e) {
+      console.error(e);
     }
   };
 
+  // If user is authenticated, this component will redirect, so we don't need to render anything
+  if (state.isAuthenticated) {
+    return null;
+  }
+
   return (
-    <div className="login-container">
-      <h2 className="text-4xl font-bold text-custom-charcoal">Login</h2>
-      <form className="w-1/2 login-form" onSubmit={loginFormHandler}>
-        <div>
-          <label htmlFor="username-login" className="block font-bold text-custom-charcoal">Username:</label>
-          <input
-            type="text"
-            name="username-login"
-            id="username-login"
-            className="border-2 border-custom-brown bg-zinc-50 block w-full rounded-sm px-2 py-1 focus:outline-none focus:ring focus:ring-orange-200"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="password-login" className="block font-bold text-custom-charcoal">Password:</label>
-          <input
-            type="password"
-            name="password-login"
-            id="password-login"
-            className="border-2 border-custom-brown bg-zinc-50 block w-full rounded-sm px-2 py-1 focus:outline-none focus:ring focus:ring-orange-200"
-            autoComplete="current-password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <button type="submit" className="bg-custom-charcoal text-white px-6 py-2 rounded-full transition-all hover:bg-custom-green mt-4">Login</button>
+    <div>
+      <h1>Login</h1>
+      <form onSubmit={handleFormSubmit}>
+        <input
+          type="text"
+          name="username"
+          value={formState.username}
+          onChange={handleChange}
+          placeholder="Username"
+        />
+        <input
+          type="password"
+          name="password"
+          value={formState.password}
+          onChange={handleChange}
+          placeholder="Password"
+        />
+        <button type="submit">Login</button>
       </form>
+      {error && <p>Login failed</p>}
     </div>
   );
 }
