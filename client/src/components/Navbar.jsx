@@ -4,10 +4,10 @@ import "../App.css";
 export default function Navbar() {
     return (
       <div>
-        <a className="nav" href="/login">Login</a>
-        <a className="nav" href="/signup">Signup</a>
-        <a className="nav" href="/event">Event</a>
-        <a className="nav" href="/">Home</a>
+        <a className="navi" href="/">Home</a>
+        <a className="navi" href="/login">Login</a>
+        <a className="navi" href="/signup">Signup</a>
+        <a className="navi" href="/events">Events</a>
       </div>
     );
   }
