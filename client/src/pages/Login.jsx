@@ -68,7 +68,7 @@ export default function Login() {
         />
         <button className='col-12 m-2' type="submit">Login</button>
       </form>
-      {error && <p className='col-12 m-2'>Login failed</p>}
+      {error && <p className='col-12 m-2'>Username or Password Incorrect</p>}
     </div>
   );
 }
