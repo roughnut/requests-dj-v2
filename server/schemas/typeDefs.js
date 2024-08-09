@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server-express');
+const { gql } = require('graphql-tag');
 
 const typeDefs = gql`
   # User type represents a user in the system

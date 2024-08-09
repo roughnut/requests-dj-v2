@@ -1,4 +1,4 @@
-const { AuthenticationError } = require('apollo-server-express');
+const { GraphQLError } = require('graphql');
 const { User, Event, SongRequest, Upvote } = require('../models');
 const { signToken } = require('../utils/auth');
 
@@ -9,7 +9,9 @@ const resolvers = {
       if (context.user) {
         return User.findById(context.user._id).populate('events songRequests upvotes');
       }
-      throw new AuthenticationError('You need to be logged in!');
+      throw new GraphQLError('You need to be logged in!', {
+        extensions: { code: 'UNAUTHENTICATED' },
+      });
     },
     // Get all users
     users: async () => {
@@ -49,13 +51,17 @@ const resolvers = {
       const user = await User.findOne({ username });
 
       if (!user) {
-        throw new AuthenticationError('No user found with this username');
+        throw new GraphQLError('No user found with this username', {
+          extensions: { code: 'UNAUTHENTICATED' },
+        });
       }
 
       const correctPw = await user.checkPassword(password);
 
       if (!correctPw) {
-        throw new AuthenticationError('Incorrect credentials');
+        throw new GraphQLError('Incorrect credentials', {
+          extensions: { code: 'UNAUTHENTICATED' },
+        });
       }
 
       const token = signToken(user);
@@ -76,7 +82,9 @@ const resolvers = {
 
         return event;
       }
-      throw new AuthenticationError('You need to be logged in!');
+      throw new GraphQLError('You need to be logged in!', {
+        extensions: { code: 'UNAUTHENTICATED' },
+      });
     },
     // Add a new song request
     addSongRequest: async (parent, { eventId, title, artist }, context) => {
@@ -93,7 +101,9 @@ const resolvers = {
 
         return songRequest;
       }
-      throw new AuthenticationError('You need to be logged in!');
+      throw new GraphQLError('You need to be logged in!', {
+        extensions: { code: 'UNAUTHENTICATED' },
+      });
     },
     // Add an upvote to a song request
     addUpvote: async (parent, { songRequestId }, context) => {
@@ -108,7 +118,9 @@ const resolvers = {
 
         return upvote;
       }
-      throw new AuthenticationError('You need to be logged in!');
+      throw new GraphQLError('You need to be logged in!', {
+        extensions: { code: 'UNAUTHENTICATED' },
+      });
     },
     // Remove an event
     removeEvent: async (parent, { eventId }, context) => {
@@ -122,7 +134,9 @@ const resolvers = {
 
         return event;
       }
-      throw new AuthenticationError('You need to be logged in!');
+      throw new GraphQLError('You need to be logged in!', {
+        extensions: { code: 'UNAUTHENTICATED' },
+      });
     },
     // Remove a song request
     removeSongRequest: async (parent, { songRequestId }, context) => {
@@ -137,7 +151,9 @@ const resolvers = {
 
         return songRequest;
       }
-      throw new AuthenticationError('You need to be logged in!');
+      throw new GraphQLError('You need to be logged in!', {
+        extensions: { code: 'UNAUTHENTICATED' },
+      });
     },
     // Remove an upvote
     removeUpvote: async (parent, { upvoteId }, context) => {
@@ -152,7 +168,9 @@ const resolvers = {
 
         return upvote;
       }
-      throw new AuthenticationError('You need to be logged in!');
+      throw new GraphQLError('You need to be logged in!', {
+        extensions: { code: 'UNAUTHENTICATED' },
+      });
     },
   },
 };
