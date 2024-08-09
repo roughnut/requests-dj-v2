@@ -27,7 +27,19 @@ const resolvers = {
     },
     // Get an event by ID
     event: async (parent, { _id }) => {
-      return Event.findById(_id).populate('user songRequests');
+      try {
+        const event = await Event.findById(_id).populate('user songRequests');
+        if (!event) {
+          throw new GraphQLError('Event not found', {
+            extensions: { code: 'NOT_FOUND' },
+          });
+        }
+        return event;
+      } catch (error) {
+        throw new GraphQLError('Error fetching event', {
+          extensions: { code: 'INTERNAL_SERVER_ERROR' },
+        });
+      }
     },
     // Get all song requests for an event
     songRequests: async (parent, { event }) => {

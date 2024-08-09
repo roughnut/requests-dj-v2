@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const AddSong = () => {
-  const [name, setName] = useState('');
+  const [title, setTitle] = useState('');
   const [artist, setArtist] = useState('');
   const navigate = useNavigate();
   const { id } = useParams();
@@ -10,7 +10,7 @@ const AddSong = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!name || !artist) {
+    if (!title || !artist) {
       alert('Please fill out all fields.');
       return;
     }
@@ -18,7 +18,7 @@ const AddSong = () => {
     try {
       const response = await fetch(`/api/events/${id}/`, {
         method: 'POST',
-        body: JSON.stringify({ name, artist }),
+        body: JSON.stringify({ title, artist }),
         headers: { 'Content-Type': 'application/json' },
       });
 
@@ -44,7 +44,7 @@ const AddSong = () => {
             id="song-title"
             className="form-control"
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => setTitle(e.target.value)}
           />
         </div>
         <div className="mb-3">

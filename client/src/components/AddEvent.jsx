@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
+import { ADD_EVENT } from '../utils/mutations';
+import { useSongContext } from '../utils/GlobalState';
 
 const AddEvent = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
+
+  const { state } = useSongContext();
   const navigate = useNavigate();
+
+  const [addEvent, {loading, error}] = useMutation(ADD_EVENT);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -16,19 +23,25 @@ const AddEvent = () => {
     }
 
     try {
-      const response = await fetch('/api/events', {
-        method: 'POST',
-        body: JSON.stringify({ name, description, date }),
-        headers: { 'Content-Type': 'application/json' },
+      const { data } = await addEvent({
+        variables: {
+          name, 
+          description, 
+          date,
+        },
       });
 
-      if (response.ok) {
+      if (data) {
         navigate('/');
-      } else {
-        alert('Event request failed. Please try again later.');
       }
     } catch (error) {
       console.error('Error:', error);
+      if (error.networkError) {
+        console.error('Network error:', error.networkError);
+      }
+      if (error.graphQLErrors) {
+        console.error('GraphQL errors:', error.graphQLErrors);
+      }
       alert('Event request failed. Please try again later.');
     }
   };
