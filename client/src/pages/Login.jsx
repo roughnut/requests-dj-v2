@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
@@ -69,9 +70,3 @@ export default function Login() {
     </div>
   );
 }
-
-// Comments:
-// - Removed import for actions.js
-// - Updated useSongContext to destructure state and setUser
-// - Replaced dispatch call with direct call to setUser
-// - Removed LOGIN_ACTION import and usage

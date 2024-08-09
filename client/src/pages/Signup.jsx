@@ -1,3 +1,4 @@
+
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { ADD_USER } from '../utils/mutations';
@@ -63,13 +64,7 @@ export default function Signup() {
         <button type="submit">Sign Up</button>
       </form>
       {error && <p>Signup failed</p>}
+
     </div>
   );
 }
-
-// Comments:
-// - Removed import for actions.js
-// - Updated useSongContext to destructure setUser
-// - Replaced dispatch call with direct call to setUser
-// - Added useNavigate hook for redirection after successful signup
-// - Removed LOGIN_USER import from actions
