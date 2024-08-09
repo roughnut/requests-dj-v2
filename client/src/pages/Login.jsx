@@ -1,18 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
-// LOGIN_USER for GraphQL
 import { LOGIN_USER } from '../utils/mutations';
 import { useSongContext } from '../utils/GlobalState';
-// LOGIN_USER uses LOGIN_ACTION as an alias for state
-import { LOGIN_USER as LOGIN_ACTION } from '../utils/actions';
 
 export default function Login() {
   const [formState, setFormState] = useState({ username: '', password: '' });
   const [login, { error }] = useMutation(LOGIN_USER);
-  const [state, dispatch] = useSongContext();
+  const { state, setUser } = useSongContext();
   
-  // JW - not sure this is the best UI - if user is authenticated there should be no option to navigate to the login page - leaving it for now
   const navigate = useNavigate();
   useEffect(() => {
     // If user is already authenticated, redirect to home page
@@ -36,10 +32,7 @@ export default function Login() {
         variables: { ...formState },
       });
       localStorage.setItem('id_token', data.login.token);
-      dispatch({
-        type: LOGIN_ACTION,
-        payload: data.login.user
-      });
+      setUser(data.login.user);
       // Redirect to home page after successful login
       navigate('/');
     } catch (e) {
@@ -76,3 +69,9 @@ export default function Login() {
     </div>
   );
 }
+
+// Comments:
+// - Removed import for actions.js
+// - Updated useSongContext to destructure state and setUser
+// - Replaced dispatch call with direct call to setUser
+// - Removed LOGIN_ACTION import and usage
