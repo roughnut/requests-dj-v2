@@ -37,9 +37,10 @@ export default function Signup() {
 
   return (
     <div>
-      <h1>Signup</h1>
+      <h1 className='row justify-content-center'>Signup</h1>
       <form onSubmit={handleFormSubmit}>
         <input
+          className='col-12 m-2'
           type="text"
           name="username"
           value={formState.username}
@@ -47,6 +48,7 @@ export default function Signup() {
           placeholder="Username"
         />
         <input
+          className='col-12 m-2'
           type="password"
           name="password"
           value={formState.password}
@@ -62,12 +64,10 @@ export default function Signup() {
           />
           Are you a DJ?
         </label>
-        <button type="submit">Sign Up</button>
+        <button className='col-12 m-2' type="submit">Sign Up</button>
       </form>
-      {error && <p>Signup failed</p>}
+      {error && <p className='col-12 m-2'>Signup failed</p>}
 
     </div>
   );
 }
-
-export default Signup;

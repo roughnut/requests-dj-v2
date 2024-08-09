@@ -3,6 +3,9 @@ import { Outlet } from 'react-router-dom';
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { SongProvider } from './utils/GlobalState';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import Auth from './utils/auth';
 
 // Create an HTTP link to the GraphQL server
 const httpLink = createHttpLink({
@@ -27,12 +30,15 @@ const client = new ApolloClient({
 });
 
 function App() {
+  const isAuthenticated = Auth.loggedIn(); // Use AuthService to check if user is logged in
   return (
     <ApolloProvider client={client}>
       <SongProvider>
+        <Navbar />
         <main className="mx-3">
           <Outlet />
         </main>
+        <Footer />
       </SongProvider>
     </ApolloProvider>
 

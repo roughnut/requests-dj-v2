@@ -11,6 +11,9 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Events from './pages/Events.jsx';
 import Home from './pages/Home';
+import AddEvent from './components/AddEvent.jsx';
+import ProtectedRoute from './components/ProtectedRoute';
+import EventPage from './pages/EventPage.jsx';
 
 // Define the accessible routes, and which components respond to which URL
 const router = createBrowserRouter([
@@ -36,6 +39,20 @@ const router = createBrowserRouter([
         path: '/events',
         element: <Events />,
       },
+      {
+        path: '/events/create_event_protected',
+        element: (<ProtectedRoute element={<AddEvent />} />),
+      },
+      // Change route path from one above after added logins, as it will not let you add an event unless you are logged in
+      // Route below is bypassing this for testing and will be removed later.
+      {
+        path: '/events/create_event',
+        element: <AddEvent />,
+      },
+      {
+        path: '/events/:id',
+        element: <EventPage />,
+      }
     ],
   },
 ]);
