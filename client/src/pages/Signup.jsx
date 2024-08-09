@@ -3,12 +3,13 @@ import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { ADD_USER } from '../utils/mutations';
 import { useSongContext } from '../utils/GlobalState';
-import { LOGIN_USER } from '../utils/actions';
+import { useNavigate } from 'react-router-dom';
 
 export default function Signup() {
   const [formState, setFormState] = useState({ username: '', password: '', is_dj: false });
   const [addUser, { error }] = useMutation(ADD_USER);
-  const [dispatch] = useSongContext(); // 'state' property not used (yet)
+  const { setUser } = useSongContext();
+  const navigate = useNavigate();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -25,11 +26,9 @@ export default function Signup() {
         variables: { ...formState },
       });
       localStorage.setItem('id_token', data.addUser.token);
-      dispatch({
-        type: LOGIN_USER,
-        payload: data.addUser.user
-      });
-      // TODO: Redirect to home page or dashboard
+      setUser(data.addUser.user);
+      // Redirect to home page after successful signup
+      navigate('/');
     } catch (e) {
       console.error(e);
     }
