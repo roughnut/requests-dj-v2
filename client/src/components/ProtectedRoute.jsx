@@ -1,11 +1,12 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import Auth from '../utils/auth';
+import { useSongContext } from '../utils/GlobalState'; // Correctly import the custom hook
 
 const ProtectedRoute = ({ element }) => {
-  const isAuthenticated = Auth.loggedIn();
-  
-  // Redirect to login if not authenticated, otherwise render the element
+  const { state } = useSongContext();  // Get the state from the context
+  const isAuthenticated = state.isAuthenticated;
+
+  // If the user is authenticated, render the component; otherwise, redirect to the login page.
   return isAuthenticated ? element : <Navigate to="/login" />;
 };
 

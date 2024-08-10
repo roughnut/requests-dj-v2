@@ -1,31 +1,15 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
-import { ADD_EVENT } from '../utils/mutations';
-import Auth from '../utils/auth';
+import React, { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const AddEvent = () => {
+const UpdateEvent = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
-
-  const { state } = useSongContext();
+  const { id } = useParams();
   const navigate = useNavigate();
-
-  const [addEvent] = useMutation(ADD_EVENT);
-
-  useEffect(() => {
-    console.log('Auth token:', Auth.getToken());
-  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    if (!Auth.loggedIn()) {
-      alert('You need to be logged in to add an event!');
-      navigate('/login');
-      return;
-    }
 
     if (!name || !description || !date) {
       alert('Please fill out all fields.');
@@ -33,48 +17,26 @@ const AddEvent = () => {
     }
 
     try {
-      const token = Auth.getToken();
-      console.log('Sending request with token:', token);
-
-      const { data } = await addEvent({
-        variables: { name, description, date },
-        context: {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        },
+      const response = await fetch(`/api/events/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ name, description, date }),
+        headers: { 'Content-Type': 'application/json' },
       });
 
-      console.log('Response data:', data);
-
-      if (data?.addEvent) {
-        navigate('/');
+      if (response.ok) {
+        navigate('/events');
       } else {
-        alert('Failed to add event. Please try again later.');
+        alert('Event request failed. Please try again later.');
       }
     } catch (error) {
       console.error('Error:', error);
-      if (error.graphQLErrors) {
-        console.error('GraphQL errors:', error.graphQLErrors);
-        error.graphQLErrors.forEach((err) => {
-          console.error('GraphQL error details:', err);
-        });
-      }
-      if (error.networkError) {
-        console.error('Network error:', error.networkError);
-      }
-      if (error.message.includes('UNAUTHENTICATED')) {
-        alert('You need to be logged in to add an event!');
-        navigate('/login');
-      } else {
-        alert('Failed to add event. Please check the console for more details.');
-      }
+      alert('Event request failed. Please try again later.');
     }
   };
 
   return (
     <div className="container mt-5">
-      <h2 className="text-center text-4xl font-weight-bold mb-4">Add Event</h2>
+      <h2 className="text-center text-4xl font-weight-bold mb-4">Update Event</h2>
       <form className="mx-auto" onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="event-title" className="form-label">Event Title:</label>
@@ -117,4 +79,4 @@ const AddEvent = () => {
   );
 };
 
-export default AddEvent;
+export default UpdateEvent;
