@@ -1,20 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { ADD_EVENT } from '../utils/mutations';
 import Auth from '../utils/auth';
+import { useSongContext } from '../utils/GlobalState';
 
 const AddEvent = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
+
+  const { state, setEvents } = useSongContext();
   const navigate = useNavigate();
 
   const [addEvent] = useMutation(ADD_EVENT);
-
-  useEffect(() => {
-    console.log('Auth token:', Auth.getToken());
-  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -35,7 +34,11 @@ const AddEvent = () => {
       console.log('Sending request with token:', token);
 
       const { data } = await addEvent({
-        variables: { name, description, date },
+        variables: { 
+          name, 
+          description, 
+          date: new Date(date).toISOString(), // Format date to ISO string
+        },
         context: {
           headers: {
             authorization: `Bearer ${token}`,
@@ -46,6 +49,8 @@ const AddEvent = () => {
       console.log('Response data:', data);
 
       if (data?.addEvent) {
+        // Update the global state with the new event
+        setEvents([...state.events, data.addEvent]);
         navigate('/');
       } else {
         alert('Failed to add event. Please try again later.');
@@ -56,16 +61,25 @@ const AddEvent = () => {
         console.error('GraphQL errors:', error.graphQLErrors);
         error.graphQLErrors.forEach((err) => {
           console.error('GraphQL error details:', err);
+          alert(`GraphQL Error: ${err.message}`);
         });
       }
       if (error.networkError) {
         console.error('Network error:', error.networkError);
+        if (error.networkError.result && error.networkError.result.errors) {
+          error.networkError.result.errors.forEach((err) => {
+            console.error('Network error details:', err);
+            alert(`Network Error: ${err.message}`);
+          });
+        } else {
+          alert(`Network Error: ${error.networkError.message}`);
+        }
       }
       if (error.message.includes('UNAUTHENTICATED')) {
         alert('You need to be logged in to add an event!');
         navigate('/login');
-      } else {
-        alert('Failed to add event. Please check the console for more details.');
+      } else if (!error.graphQLErrors && !error.networkError) {
+        alert(`Error: ${error.message}`);
       }
     }
   };
