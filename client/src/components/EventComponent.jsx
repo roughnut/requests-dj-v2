@@ -27,7 +27,7 @@ const EventComponent = ({ eventInfo, userId }) => {
       {eventInfo.user_id === userId && (
         <div className="mt-2">
           <a
-            href={`/events/update/${eventInfo.id}`}
+            href={`/events/${eventInfo.id}/update`}
             className="btn btn-dark m-2"
             onClick={(e) => e.stopPropagation()}
           >

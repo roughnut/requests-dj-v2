@@ -1,0 +1,82 @@
+import React, { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+
+const UpdateEvent = () => {
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [date, setDate] = useState('');
+  const { id } = useParams();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!name || !description || !date) {
+      alert('Please fill out all fields.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/events/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ name, description, date }),
+        headers: { 'Content-Type': 'application/json' },
+      });
+
+      if (response.ok) {
+        navigate('/events');
+      } else {
+        alert('Event request failed. Please try again later.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Event request failed. Please try again later.');
+    }
+  };
+
+  return (
+    <div className="container mt-5">
+      <h2 className="text-center text-4xl font-weight-bold mb-4">Update Event</h2>
+      <form className="mx-auto" onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <label htmlFor="event-title" className="form-label">Event Title:</label>
+          <input
+            type="text"
+            id="event-title"
+            className="form-control"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="event-desc" className="form-label">Event Description:</label>
+          <input
+            type="text"
+            id="event-desc"
+            className="form-control"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="event-date" className="form-label">Event Date:</label>
+          <input
+            type="date"
+            id="event-date"
+            className="form-control"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+          />
+        </div>
+        <button
+          type="submit"
+          className="btn btn-dark btn-lg w-100 mt-4"
+        >
+          Submit
+        </button>
+      </form>
+    </div>
+  );
+};
+
+export default UpdateEvent;

@@ -1,13 +1,14 @@
 import { createContext, useContext, useState } from "react";
 import PropTypes from "prop-types";
+import Auth from "./auth";
 
 // Create the context
 const SongContext = createContext();
 
 // Initial state
 const initialState = {
-  user: null,
-  isAuthenticated: false,
+  user: Auth.getProfile() || null,
+  isAuthenticated: Auth.loggedIn(),
   events: [],
   currentEvent: null,
   songRequests: [],
