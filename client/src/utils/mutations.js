@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const LOGIN_USER = gql`
   mutation login($username: String!, $password: String!) {
@@ -26,19 +26,21 @@ export const ADD_USER = gql`
 `;
 
 export const ADD_EVENT = gql`
-  mutation addEvent($name: String!, $description: String!, $date: String!, $user: UserInput!) {
-    addEvent(name: $name, description: $description, date: $date, user: $user) {
-      _id
-      name
-      description
-      date
-      user {
-        _id
-        username
-      }
-    }
-  }
-`;
+-  mutation addEvent($name: String!, $description: String!, $date: String!, $user: UserInput!) {
+-    addEvent(name: $name, description: $description, date: $date, user: $user) {
++  mutation addEvent($name: String!, $description: String!, $date: String!) {
++    addEvent(name: $name, description: $description, date: $date) {
+       _id
+       name
+       description
+       date
+       user {
+         _id
+         username
+       }
+     }
+   }
+ `;
 
 export const ADD_SONG_REQUEST = gql`
   mutation addSongRequest($eventId: ID!, $title: String!, $artist: String) {
@@ -73,3 +75,4 @@ export const ADD_UPVOTE = gql`
     }
   }
 `;
+// some comment
