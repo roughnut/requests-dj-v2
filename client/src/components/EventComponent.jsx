@@ -1,17 +1,37 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useMutation } from "@apollo/client";
+import { REMOVE_EVENT } from "../utils/mutations";
+import { formatDate } from "../utils/formatDate";
+import { useSongContext } from "../utils/GlobalState";
 
-const EventComponent = ({ eventInfo, userId }) => {
+const EventComponent = ({ eventInfo }) => {
+  const { state } = useSongContext();
+  console.log(state);
+  const { user } = state;
+  const userId = user ? user.data._id : null;
   const navigate = useNavigate();
+  const [deleteEvent] = useMutation(REMOVE_EVENT);
 
   const handleBoxClick = () => {
-    navigate(`/events/${eventInfo.id}`);
+    navigate(`/events/${eventInfo._id}`);
   };
+
+  console.log(userId);
+  console.log(eventInfo);
 
   const handleDeleteClick = async (e) => {
     e.stopPropagation(); // Prevents the box click handler from firing
+
     if (window.confirm('Are you sure you want to delete this event?')) {
-      await deleteEvent(eventInfo.id);
+      try {
+        await deleteEvent({ variables: { eventId: eventInfo._id } });
+        alert('Event deleted successfully');
+        window.location.reload();
+      } catch (error) {
+        console.error('Error deleting event:', error);
+        alert('Failed to delete event');
+      }
     }
   };
 
@@ -22,17 +42,18 @@ const EventComponent = ({ eventInfo, userId }) => {
       style={{ cursor: "pointer" }}
     >
       <header className="h5 fw-bold text-dark">{eventInfo.name}</header>
-      <p className="mb-1">Hosted by {eventInfo.createdBy}</p>
-
-      {eventInfo.user_id === userId && (
+      <p className="mb-1">Hosted by {eventInfo.user.username}</p>
+      <p>{eventInfo.description}</p>
+      <p>Date: {formatDate(eventInfo.date)}</p>
+      {eventInfo.user._id === userId && (
         <div className="mt-2">
-          <a
-            href={`/events/${eventInfo.id}/update`}
+          <Link
+            to={`/events/${eventInfo._id}/update`}
             className="btn btn-dark m-2"
             onClick={(e) => e.stopPropagation()}
           >
             Update Event
-          </a>
+          </Link>
           <button 
             className="btn btn-dark m-2"
             onClick={handleDeleteClick}
@@ -44,28 +65,5 @@ const EventComponent = ({ eventInfo, userId }) => {
     </div>
   );
 };
-
-
-// To handle deleting an event, will be updated once server connected.
-const deleteEvent = async (eventId) => {
-  try {
-    const response = await fetch(`/api/events/${eventId}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to delete event');
-    }
-
-    alert('Event deleted successfully');
-  } catch (error) {
-    console.error('Error deleting event:', error);
-    alert('Failed to delete event');
-  }
-};
-
 
 export default EventComponent;
