@@ -82,4 +82,15 @@ export const REMOVE_EVENT = gql`
     }
   }
 `;
+
+export const UPDATE_EVENT = gql`
+  mutation UpdateEvent($eventId: ID!, $name: String!, $description: String!, $date: String!) {
+    updateEvent(eventId: $eventId, name: $name, description: $description, date: $date) {
+      _id
+      name
+      description
+      date
+    }
+  }
+`;
 // some comment

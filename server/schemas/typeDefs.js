@@ -65,6 +65,7 @@ const typeDefs = gql`
     removeEvent(eventId: ID!): Event # Remove an event
     removeSongRequest(songRequestId: ID!): SongRequest # Remove a song request
     removeUpvote(upvoteId: ID!): Upvote # Remove an upvote
+    updateEvent(eventId: ID!, name: String!, description: String!, date: String!): Event # Update an event
   }
 `;
 

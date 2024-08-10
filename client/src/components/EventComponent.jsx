@@ -7,7 +7,6 @@ import { useSongContext } from "../utils/GlobalState";
 
 const EventComponent = ({ eventInfo }) => {
   const { state } = useSongContext();
-  console.log(state);
   const { user } = state;
   const userId = user ? user.data._id : null;
   const navigate = useNavigate();
@@ -16,9 +15,6 @@ const EventComponent = ({ eventInfo }) => {
   const handleBoxClick = () => {
     navigate(`/events/${eventInfo._id}`);
   };
-
-  console.log(userId);
-  console.log(eventInfo);
 
   const handleDeleteClick = async (e) => {
     e.stopPropagation(); // Prevents the box click handler from firing
