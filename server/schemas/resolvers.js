@@ -71,16 +71,35 @@ const resolvers = {
     // Add a new event
     addEvent: async (parent, { name, description, date }, context) => {
       if (context.user) {
-        const event = await Event.create({
-          name,
-          description,
-          date,
-          user: context.user._id,
-        });
+        try {
+          console.log('Context user:', context.user);
 
-        await User.findByIdAndUpdate(context.user._id, { $push: { events: event._id } });
+          const user = await User.findById(context.user._id);
+          if (!user) {
+            throw new Error('User not found');
+          }
+          console.log('Found user:', user);
 
-        return event;
+          const event = await Event.create({
+            name,
+            description,
+            date,
+            user: user._id,
+          });
+          console.log('Created event:', event);
+
+          await User.findByIdAndUpdate(user._id, { $push: { events: event._id } });
+
+          const populatedEvent = await Event.findById(event._id).populate('user');
+          console.log('Populated event:', populatedEvent);
+
+          return populatedEvent;
+        } catch (error) {
+          console.error('Error in addEvent resolver:', error);
+          throw new GraphQLError('Failed to add event', {
+            extensions: { code: 'INTERNAL_SERVER_ERROR', error: error.message },
+          });
+        }
       }
       throw new GraphQLError('You need to be logged in!', {
         extensions: { code: 'UNAUTHENTICATED' },

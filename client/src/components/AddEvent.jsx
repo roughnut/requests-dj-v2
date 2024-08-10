@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useMutation } from '@apollo/client';
+import { ADD_EVENT } from '../utils/mutations';
+import Auth from '../utils/auth';
 
 const AddEvent = () => {
   const [name, setName] = useState('');
@@ -7,8 +10,20 @@ const AddEvent = () => {
   const [date, setDate] = useState('');
   const navigate = useNavigate();
 
+  const [addEvent] = useMutation(ADD_EVENT);
+
+  useEffect(() => {
+    console.log('Auth token:', Auth.getToken());
+  }, []);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    if (!Auth.loggedIn()) {
+      alert('You need to be logged in to add an event!');
+      navigate('/login');
+      return;
+    }
 
     if (!name || !description || !date) {
       alert('Please fill out all fields.');
@@ -16,20 +31,42 @@ const AddEvent = () => {
     }
 
     try {
-      const response = await fetch('/api/events', {
-        method: 'POST',
-        body: JSON.stringify({ name, description, date }),
-        headers: { 'Content-Type': 'application/json' },
+      const token = Auth.getToken();
+      console.log('Sending request with token:', token);
+
+      const { data } = await addEvent({
+        variables: { name, description, date },
+        context: {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        },
       });
 
-      if (response.ok) {
+      console.log('Response data:', data);
+
+      if (data?.addEvent) {
         navigate('/');
       } else {
-        alert('Event request failed. Please try again later.');
+        alert('Failed to add event. Please try again later.');
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('Event request failed. Please try again later.');
+      if (error.graphQLErrors) {
+        console.error('GraphQL errors:', error.graphQLErrors);
+        error.graphQLErrors.forEach((err) => {
+          console.error('GraphQL error details:', err);
+        });
+      }
+      if (error.networkError) {
+        console.error('Network error:', error.networkError);
+      }
+      if (error.message.includes('UNAUTHENTICATED')) {
+        alert('You need to be logged in to add an event!');
+        navigate('/login');
+      } else {
+        alert('Failed to add event. Please check the console for more details.');
+      }
     }
   };
 
