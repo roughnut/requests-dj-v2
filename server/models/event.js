@@ -22,7 +22,13 @@ const eventSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
-  }
+  },
+  songRequests: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'SongRequest'
+    }
+  ]
 }, {
   // Enable timestamps for createdAt and updatedAt
   timestamps: true

@@ -73,4 +73,24 @@ export const ADD_UPVOTE = gql`
     }
   }
 `;
+
+export const REMOVE_EVENT = gql`
+  mutation RemoveEvent($eventId: ID!) {
+    removeEvent(eventId: $eventId) {
+      _id
+      name
+    }
+  }
+`;
+
+export const UPDATE_EVENT = gql`
+  mutation UpdateEvent($eventId: ID!, $name: String!, $description: String!, $date: String!) {
+    updateEvent(eventId: $eventId, name: $name, description: $description, date: $date) {
+      _id
+      name
+      description
+      date
+    }
+  }
+`;
 // some comment

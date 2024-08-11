@@ -1,12 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useMutation, useQuery } from '@apollo/client';
+import { UPDATE_EVENT } from '../utils/mutations';
+import { GET_EVENT } from '../utils/queries';
 
 const UpdateEvent = () => {
+  const { id } = useParams(); // Get event ID from URL
+  const navigate = useNavigate();
+
+  // States for form fields
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
-  const { id } = useParams();
-  const navigate = useNavigate();
+
+  // Query to fetch event details
+  const { data, loading, error } = useQuery(GET_EVENT, {
+    variables: { _id: id }, // Adjust to use _id based on your schema
+  });
+
+  const [updateEvent] = useMutation(UPDATE_EVENT);
+
+  useEffect(() => {
+    if (data && data.event) {
+      setName(data.event.name);
+      setDescription(data.event.description);
+
+      // Handle date formatting
+      const eventDate = data.event.date;
+      if (eventDate) {
+        // Try to parse and format date
+        const parsedDate = new Date(eventDate);
+        if (!isNaN(parsedDate.getTime())) {
+          setDate(parsedDate.toISOString().split('T')[0]); // Format date for the input? doesnt seem to be working.
+        }
+      }
+    }
+  }, [data]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -17,22 +46,25 @@ const UpdateEvent = () => {
     }
 
     try {
-      const response = await fetch(`/api/events/${id}`, {
-        method: 'PUT',
-        body: JSON.stringify({ name, description, date }),
-        headers: { 'Content-Type': 'application/json' },
+      await updateEvent({
+        variables: {
+          eventId: id, // Pass event ID as variable
+          name,
+          description,
+          date: new Date(date).toISOString(), // Format date to ISO string
+        },
       });
-
-      if (response.ok) {
-        navigate('/events');
-      } else {
-        alert('Event request failed. Please try again later.');
-      }
+      alert('Event updated successfully');
+      navigate('/events');
+      window.location.reload();
     } catch (error) {
       console.error('Error:', error);
-      alert('Event request failed. Please try again later.');
+      alert('Event update failed. Please try again later.');
     }
   };
+
+  if (loading) return <p>Loading...</p>; // Loading state
+  if (error) return <p>Error: {error.message}</p>; // Error state
 
   return (
     <div className="container mt-5">

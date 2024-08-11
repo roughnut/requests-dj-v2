@@ -203,7 +203,45 @@ const resolvers = {
         extensions: { code: 'UNAUTHENTICATED' },
       });
     },
+    updateEvent: async (parent, { eventId, name, description, date }, context) => {
+      if (context.user) {
+        try {
+          // Validate input fields
+          if (!name || !description || !date) {
+            throw new GraphQLError('All fields are required.', {
+              extensions: { code: 'BAD_USER_INPUT' },
+            });
+          }
+    
+          // Find and update the event
+          const updatedEvent = await Event.findOneAndUpdate(
+            { _id: eventId, user: context.user._id },
+            { name, description, date },
+            { new: true } // Return the updated document
+          );
+    
+          // If no event is found or updated, return null
+          if (!updatedEvent) {
+            throw new GraphQLError('Event not found or you do not have permission to update it.', {
+              extensions: { code: 'FORBIDDEN' },
+            });
+          }
+    
+          return updatedEvent;
+        } catch (error) {
+          throw new GraphQLError(error.message, {
+            extensions: { code: 'INTERNAL_SERVER_ERROR' },
+          });
+        }
+      }
+    
+      throw new GraphQLError('You need to be logged in!', {
+        extensions: { code: 'UNAUTHENTICATED' },
+      });
+    },
   },
 };
+
+
 
 module.exports = resolvers;
