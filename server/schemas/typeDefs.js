@@ -5,7 +5,6 @@ const typeDefs = gql`
   type User {
     _id: ID!                 # Unique identifier for the user
     username: String!        # Username of the user
-    is_dj: Boolean!          # Boolean indicating if the user is a DJ
     events: [Event]          # List of events associated with the user
     songRequests: [SongRequest] # List of song requests made by the user
     upvotes: [Upvote]        # List of upvotes made by the user
@@ -57,7 +56,7 @@ const typeDefs = gql`
 
   # Mutation type defines all the available mutations
   type Mutation {
-    addUser(username: String!, password: String!, is_dj: Boolean!): Auth # Add a new user
+    addUser(username: String!, password: String!): Auth # Add a new user
     login(username: String!, password: String!): Auth # Login a user
     addEvent(name: String!, description: String!, date: String!): Event # Add a new event
     addSongRequest(eventId: ID!, title: String!, artist: String): SongRequest # Add a new song request
