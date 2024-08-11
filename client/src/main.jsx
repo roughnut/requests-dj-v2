@@ -1,7 +1,10 @@
-import React from 'react'
+// import React from 'react' // currently not used
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
+
+// Import Bootstrap CSS
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 

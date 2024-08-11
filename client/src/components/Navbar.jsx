@@ -1,8 +1,8 @@
-// Include code here for a Navbar.
-import "../App.css";
 import React from "react";
+import { Link } from "react-router-dom";
 import Auth from "../utils/auth";
 import { useSongContext } from "../utils/GlobalState";
+import { Navbar as BootstrapNavbar, Nav, Container } from "react-bootstrap";
 
 export default function Navbar() {
   const { state } = useSongContext();
@@ -12,20 +12,25 @@ export default function Navbar() {
   };
 
   return (
-    <div>
-      <a className="navi" href="/">Home</a>
-      <a className="navi" href="/events">Events</a>
-
-      {state.isAuthenticated ? (
-        <>
-          <a className="navi" href="/" onClick={handleLogout}>Logout</a>
-        </>
-      ) : (
-        <>
-          <a className="navi" href="/login">Login</a>
-          <a className="navi" href="/signup">Signup</a>
-        </>
-      )}
-    </div>
+    <BootstrapNavbar bg="light" expand="lg" className="mb-4">
+      <Container>
+        <BootstrapNavbar.Brand as={Link} to="/">Requests.DJ</BootstrapNavbar.Brand>
+        <BootstrapNavbar.Toggle aria-controls="basic-navbar-nav" />
+        <BootstrapNavbar.Collapse id="basic-navbar-nav">
+          <Nav className="ms-auto">
+            <Nav.Link as={Link} to="/">Home</Nav.Link>
+            <Nav.Link as={Link} to="/events">Events</Nav.Link>
+            {state.isAuthenticated ? (
+              <Nav.Link as={Link} to="/" onClick={handleLogout}>Logout</Nav.Link>
+            ) : (
+              <>
+                <Nav.Link as={Link} to="/login">Login</Nav.Link>
+                <Nav.Link as={Link} to="/signup">Signup</Nav.Link>
+              </>
+            )}
+          </Nav>
+        </BootstrapNavbar.Collapse>
+      </Container>
+    </BootstrapNavbar>
   );
 }

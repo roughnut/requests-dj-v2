@@ -34,14 +34,17 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <SongProvider>
-        <Navbar />
-        <main className="mx-3">
-          <Outlet />
-        </main>
-        <Footer />
+        <div className="d-flex flex-column min-vh-100">
+          <Navbar />
+          <main className="flex-grow-1 py-4">
+            <div className="container">
+              <Outlet />
+            </div>
+          </main>
+          <Footer />
+        </div>
       </SongProvider>
     </ApolloProvider>
-
   );
 }
 
