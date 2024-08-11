@@ -14,11 +14,6 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true
-  },
-  // Is DJ field
-  is_dj: {
-    type: Boolean,
-    default: false
   }
 }, {
   // Enable timestamps for createdAt and updatedAt

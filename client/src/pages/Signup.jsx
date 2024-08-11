@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { ADD_USER } from '../utils/mutations';
@@ -6,7 +5,7 @@ import { useSongContext } from '../utils/GlobalState';
 import { useNavigate } from 'react-router-dom';
 
 export default function Signup() {
-  const [formState, setFormState] = useState({ username: '', password: '', is_dj: false });
+  const [formState, setFormState] = useState({ username: '', password: '' });
   const [addUser, { error }] = useMutation(ADD_USER);
   const { setUser } = useSongContext();
   const navigate = useNavigate();
@@ -15,7 +14,7 @@ export default function Signup() {
     const { name, value } = event.target;
     setFormState({
       ...formState,
-      [name]: name === 'is_dj' ? event.target.checked : value,
+      [name]: value,
     });
   };
 
@@ -54,19 +53,9 @@ export default function Signup() {
           onChange={handleChange}
           placeholder="Password"
         />
-        <label>
-          <input
-            type="checkbox"
-            name="is_dj"
-            checked={formState.is_dj}
-            onChange={handleChange}
-          />
-          Are you a DJ?
-        </label>
         <button className='col-12 m-2' type="submit">Sign Up</button>
       </form>
       {error && <p className='col-12 m-2'>Signup failed</p>}
-
     </div>
   );
 }

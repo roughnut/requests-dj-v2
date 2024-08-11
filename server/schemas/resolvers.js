@@ -53,8 +53,8 @@ const resolvers = {
 
   Mutation: {
     // Add a new user
-    addUser: async (parent, { username, password, is_dj }) => {
-      const user = await User.create({ username, password, is_dj });
+    addUser: async (parent, { username, password }) => {
+      const user = await User.create({ username, password });
       const token = signToken(user);
       return { token, user };
     },
@@ -241,7 +241,5 @@ const resolvers = {
     },
   },
 };
-
-
 
 module.exports = resolvers;
