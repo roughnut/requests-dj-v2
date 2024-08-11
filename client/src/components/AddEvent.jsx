@@ -4,6 +4,7 @@ import { useMutation } from '@apollo/client';
 import { ADD_EVENT } from '../utils/mutations';
 import Auth from '../utils/auth';
 import { useSongContext } from '../utils/GlobalState';
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 
 const AddEvent = () => {
   const [name, setName] = useState('');
@@ -86,49 +87,64 @@ const AddEvent = () => {
   };
 
   return (
-    <div className="container mt-5">
-      <h2 className="text-center text-4xl font-weight-bold mb-4">Add Event</h2>
-      <form className="mx-auto" onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="event-title" className="form-label">Event Title:</label>
-          <input
-            type="text"
-            id="event-title"
-            className="form-control"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="event-desc" className="form-label">Event Description:</label>
-          <input
-            type="text"
-            id="event-desc"
-            className="form-control"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="event-date" className="form-label">Event Date:</label>
-          <input
-            type="date"
-            id="event-date"
-            className="form-control"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-          />
-        </div>
-        <button
-          type="submit"
-          className="btn btn-dark btn-lg w-100 mt-4"
-        >
-          Submit
-        </button>
-      </form>
-    </div>
+    <Container>
+      <Row className="my-5">
+        <Col>
+          <div className="p-5 mb-4 bg-light rounded-3">
+            <h1 className="display-4">Create a New Event</h1>
+            <p className="lead">Fill out the form below to add a new event to your lineup.</p>
+          </div>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group className="mb-4">
+              <Form.Label htmlFor="event-title">Event Title</Form.Label>
+              <Form.Control
+                type="text"
+                id="event-title"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                placeholder="Enter event title"
+              />
+            </Form.Group>
+            <Form.Group className="mb-4">
+              <Form.Label htmlFor="event-desc">Event Description</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={4}
+                id="event-desc"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                required
+                placeholder="Describe your event"
+              />
+            </Form.Group>
+            <Form.Group className="mb-4">
+              <Form.Label htmlFor="event-date">Event Date</Form.Label>
+              <Form.Control
+                type="date"
+                id="event-date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Button
+              variant="primary"
+              type="submit"
+              className="w-100 mt-4 py-2"
+              size="lg"
+            >
+              Create Event
+            </Button>
+          </Form>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 
 export default AddEvent;
-// some comment
