@@ -22,7 +22,12 @@ const songRequestSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
-  }
+  },
+  // Reference to the upvotes for this song
+  upvotes: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Upvote'
+  }]
 }, {
   // Enable timestamps for createdAt and updatedAt
   timestamps: true
