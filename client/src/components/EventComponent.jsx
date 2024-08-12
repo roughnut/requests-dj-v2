@@ -13,7 +13,6 @@ const EventComponent = ({ eventInfo }) => {
   const navigate = useNavigate();
   const [deleteEvent] = useMutation(REMOVE_EVENT);
 
-  // Add a check to ensure eventInfo is defined
   if (!eventInfo) {
     return <div>Loading event information...</div>;
   }
@@ -23,7 +22,7 @@ const EventComponent = ({ eventInfo }) => {
   };
 
   const handleDeleteClick = async (e) => {
-    e.stopPropagation(); // Prevents the box click handler from firing
+    e.stopPropagation();
 
     if (window.confirm('Are you sure you want to delete this event?')) {
       try {
@@ -39,25 +38,24 @@ const EventComponent = ({ eventInfo }) => {
 
   return (
     <div
-      className="border border-success p-3 rounded transition-shadow hover-shadow-sm m-2"
+      className="event-card"
       onClick={handleBoxClick}
-      style={{ cursor: "pointer" }}
     >
-      <header className="h5 fw-bold text-dark">{eventInfo.name}</header>
-      <p className="mb-1">Hosted by {eventInfo.user?.username}</p>
-      <p>{eventInfo.description}</p>
-      <p>Date: {formatDate(eventInfo.date)}</p>
+      <h3 className="event-title">{eventInfo.name}</h3>
+      <p className="event-host">Hosted by {eventInfo.user?.username}</p>
+      <p className="event-description">{eventInfo.description}</p>
+      <p className="event-date">Date: {formatDate(eventInfo.date)}</p>
       {eventInfo.user?._id === userId && (
-        <div className="mt-2">
+        <div className="event-actions">
           <Link
             to={`/events/${eventInfo._id}/update`}
-            className="btn btn-dark m-2"
+            className="btn btn-outline-primary event-action-btn"
             onClick={(e) => e.stopPropagation()}
           >
             Update Event
           </Link>
           <button 
-            className="btn btn-dark m-2"
+            className="btn btn-outline-danger event-action-btn"
             onClick={handleDeleteClick}
           >
             Delete Event
