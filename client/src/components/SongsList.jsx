@@ -32,8 +32,6 @@ const SongsList = () => {
 
   const songs = data?.songRequests || [];
 
-  console.log(songs);
-
   return (
     <div className="container mt-4">
       <h2>Songs List</h2>

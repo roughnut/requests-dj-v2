@@ -17,12 +17,6 @@ const songRequestSchema = new mongoose.Schema({
     ref: 'Event',
     required: true
   },
-  // Reference to the user who made the request
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
   // Reference to the upvotes for this song
   upvotes: [{
     type: mongoose.Schema.Types.ObjectId,

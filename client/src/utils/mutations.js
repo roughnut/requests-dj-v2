@@ -50,10 +50,6 @@ export const ADD_SONG_REQUEST = gql`
         _id
         name
       }
-      user {
-        _id
-        username
-      }
     }
   }
 `;

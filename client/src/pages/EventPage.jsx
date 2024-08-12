@@ -20,8 +20,6 @@ const EventPage = () => {
 
   const event = data?.event;
 
-  console.log(event)
-
   return (
     <div>
       <h1 className="text-4xl font-bold text-custom-charcoal">Event Details</h1>

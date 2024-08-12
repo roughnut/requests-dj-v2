@@ -35,7 +35,7 @@ const AddSong = () => {
         variables: {
           eventId,
           title,
-          artist,
+          artist: artist || '',
         },
       });
     } catch (err) {

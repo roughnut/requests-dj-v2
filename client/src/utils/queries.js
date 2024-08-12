@@ -101,10 +101,6 @@ export const GET_EVENT = gql`
         _id
         title
         artist
-        user {
-          _id
-          username
-        }
         upvotes {
           _id
           user {
@@ -127,10 +123,6 @@ export const GET_SONG_REQUESTS = gql`
         _id
         name
       }
-      user {
-        _id
-        username
-      }
       upvotes {
         _id
         user {
@@ -151,10 +143,6 @@ export const GET_SONG_REQUEST = gql`
       event {
         _id
         name
-      }
-      user {
-        _id
-        username
       }
       upvotes {
         _id
