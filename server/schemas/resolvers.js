@@ -30,21 +30,21 @@ const resolvers = {
       try {
         const event = await Event.findById(_id)
           .populate({
-            path: 'user',
-            select: 'username' // Explicitly select the `username` field
+            path: 'songRequests',
+            populate: { path: 'event' } // Ensure event is fully populated
           })
-          .populate({
-            path: 'songRequests', // Populate songRequests and its fields if needed
-            populate: [
-              { path: 'user', select: 'username' }, // Populate user in songRequests if needed
-              { path: 'event' }, // Populate event in songRequests if needed
-              { path: 'upvotes' } // Populate upvotes in songRequests if needed
-            ]
-          });
+          .populate('user');
     
         if (!event) {
           throw new GraphQLError('Event not found', {
             extensions: { code: 'NOT_FOUND' },
+          });
+        }
+    
+        // Ensure event name is not null
+        if (!event.name) {
+          throw new GraphQLError('Event name is missing', {
+            extensions: { code: 'INTERNAL_SERVER_ERROR' },
           });
         }
     
@@ -58,10 +58,6 @@ const resolvers = {
     },
     songRequests: async (parent, { event }) => {
       const requests = await SongRequest.find({ event })
-        .populate({
-          path: 'user',
-          select: 'username'
-        })
         .populate({
           path: 'event'
         })
@@ -142,53 +138,22 @@ const resolvers = {
     },
     // Add a new song request
     addSongRequest: async (parent, { eventId, title, artist }, context) => {
-      if (context.user) {
-        try {
-          // Create the song request
-          const songRequest = await SongRequest.create({
-            title,
-            artist,
-            event: eventId,
-            user: context.user._id,
-          });
-    
-          // Update event and user with new song request
-          await Event.findByIdAndUpdate(eventId, { $push: { songRequests: songRequest._id } });
-          await User.findByIdAndUpdate(context.user._id, { $push: { songRequests: songRequest._id } });
-    
-          // Fetch event and user details to ensure they are included in the response
-          const event = await Event.findById(eventId).exec();
-          const user = await User.findById(context.user._id).select('username').exec();
-    
-          if (!event || !user) {
-            throw new GraphQLError('Event or User not found', {
-              extensions: { code: 'INTERNAL_SERVER_ERROR' },
-            });
-          }
-    
-          // Return the song request with populated event and user fields
-          return {
-            ...songRequest._doc,
-            event: {
-              _id: event._id,
-              name: event.name,
-            },
-            user: {
-              _id: user._id,
-              username: user.username,
-            },
-          };
-        } catch (error) {
-          console.error('Error in addSongRequest resolver:', error);
-          throw new GraphQLError('Failed to add song request', {
-            extensions: { code: 'INTERNAL_SERVER_ERROR' },
-          });
-        }
+      try {
+        const songRequest = await SongRequest.create({
+          title,
+          artist,
+          event: eventId,
+        });
+
+        await Event.findByIdAndUpdate(eventId, { $push: { songRequests: songRequest._id } });
+
+        return songRequest;
+      } catch (error) {
+        throw new GraphQLError('Failed to add song request', {
+          extensions: { code: 'INTERNAL_SERVER_ERROR', error: error.message },
+        });
       }
-      throw new GraphQLError('You need to be logged in!', {
-        extensions: { code: 'UNAUTHENTICATED' },
-      });
-    },    
+    },
     // Add an upvote to a song request
     addUpvote: async (parent, { songRequestId }, context) => {
       if (context.user) {

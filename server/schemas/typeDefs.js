@@ -26,7 +26,6 @@ const typeDefs = gql`
     title: String!           # Title of the requested song
     artist: String           # Artist of the requested song (optional)
     event: Event!            # Event for which the song is requested
-    user: User!              # User who made the song request
     upvotes: [Upvote]        # List of upvotes for this song request
   }
 

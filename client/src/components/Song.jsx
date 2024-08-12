@@ -19,13 +19,11 @@ const Song = ({ song, onUpvote }) => {
       alert('Failed to upvote. Please try again.');
     }
   };
-  console.log('song:', song);
 
   return (
     <div className="border border-success p-3 rounded transition-shadow hover-shadow-sm m-2">
       <header className="h5 fw-bold text-dark">{song.title}</header>
       <p className="mb-1">Artist: {song.artist}</p>
-      <p className="mb-1">Requested by: {song.user.username}</p>
       <p className="mb-1">Votes: {song.upvotes.length}</p>
       <button
         className="btn btn-dark"
