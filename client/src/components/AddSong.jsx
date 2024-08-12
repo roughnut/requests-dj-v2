@@ -15,6 +15,15 @@ const AddSong = () => {
     onError: (error) => {
       setError(error.message);
       console.error('GraphQL error:', error);
+      console.error('GraphQL error details:', JSON.stringify(error, null, 2));
+      if (error.graphQLErrors) {
+        error.graphQLErrors.forEach((graphQLError, index) => {
+          console.error(`GraphQL Error ${index + 1}:`, graphQLError);
+        });
+      }
+      if (error.networkError) {
+        console.error('Network error:', error.networkError);
+      }
     },
     onCompleted: () => {
       navigate(`/events/${eventId}`);
@@ -40,6 +49,7 @@ const AddSong = () => {
       });
     } catch (err) {
       setError('Song request failed. Please try again later.');
+      console.error('Error in handleSubmit:', err);
     }
   };
 

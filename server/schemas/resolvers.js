@@ -139,6 +139,13 @@ const resolvers = {
     // Add a new song request
     addSongRequest: async (parent, { eventId, title, artist }, context) => {
       try {
+        const event = await Event.findById(eventId);
+        if (!event) {
+          throw new GraphQLError('Event not found', {
+            extensions: { code: 'NOT_FOUND' },
+          });
+        }
+
         const songRequest = await SongRequest.create({
           title,
           artist,
@@ -147,8 +154,12 @@ const resolvers = {
 
         await Event.findByIdAndUpdate(eventId, { $push: { songRequests: songRequest._id } });
 
-        return songRequest;
+        // Populate the event field
+        const populatedSongRequest = await SongRequest.findById(songRequest._id).populate('event');
+
+        return populatedSongRequest;
       } catch (error) {
+        console.error('Error in addSongRequest:', error);
         throw new GraphQLError('Failed to add song request', {
           extensions: { code: 'INTERNAL_SERVER_ERROR', error: error.message },
         });
