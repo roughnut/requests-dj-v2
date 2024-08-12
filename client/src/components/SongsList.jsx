@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import Song from './Song';
 import { GET_SONG_REQUESTS } from '../utils/queries'; // Import your GraphQL query
 import { ADD_UPVOTE } from '../utils/mutations'; // Import a mutation for upvoting (if you have one)
+import './SongsList.css';
 
 const SongsList = () => {
   const { id: eventId } = useParams(); // Get the event ID from the URL
@@ -33,9 +34,9 @@ const SongsList = () => {
   const songs = data?.songRequests || [];
 
   return (
-    <div className="container mt-4">
-      <h2>Songs List</h2>
-      <div className="row">
+    <div className="songs-list">
+      <h2 className='songs-list-title'>Songs List</h2>
+      <div className="events-grid">
         {songs.length > 0 ? (
           songs.map(song => (
             <div className="col-12 mb-3" key={song._id}>
