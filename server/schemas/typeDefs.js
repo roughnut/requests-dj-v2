@@ -21,12 +21,14 @@ const typeDefs = gql`
   }
 
   # SongRequest type represents a song request made by a user for an event
+  # user is nullable to allow unauthenticated guest users
   type SongRequest {
-    _id: ID!                 # Unique identifier for the song request
-    title: String!           # Title of the requested song
-    artist: String           # Artist of the requested song (optional)
-    event: Event!            # Event for which the song is requested
-    upvotes: [Upvote]        # List of upvotes for this song request
+    _id: ID!                 
+    title: String!           
+    artist: String           
+    event: Event!        
+    user: User             
+    upvotes: [Upvote] 
   }
 
   # Upvote type represents an upvote made by a user for a song request

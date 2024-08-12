@@ -2,41 +2,27 @@ import React from 'react';
 import EventComponent from './EventComponent';
 import { useQuery } from '@apollo/client';
 import { GET_EVENTS } from '../utils/queries';
-import { Container, Row, Col, Spinner, Alert } from 'react-bootstrap';
+import './EventList.css'; // We'll create this CSS file next
 
 const EventsList = ({ userId }) => {
   const { data, loading, error } = useQuery(GET_EVENTS);
 
-  if (loading) return (
-    <Container className="text-center mt-5">
-      <Spinner animation="border" role="status">
-        <span className="visually-hidden">Loading...</span>
-      </Spinner>
-    </Container>
-  );
-
-  if (error) return (
-    <Container className="mt-5">
-      <Alert variant="danger">
-        Error: {error.message}
-      </Alert>
-    </Container>
-  );
+  if (loading) return <div className="loading">Loading events...</div>;
+  if (error) return <div className="error">Error: {error.message}</div>;
 
   return (
-    <Container className="py-5">
-      <h2 className="text-center mb-4">Upcoming Events</h2>
-      <Row xs={1} md={2} lg={3} className="g-4">
+    <div className="events-list">
+      <h2 className="events-list-title">Upcoming Events</h2>
+      <div className="events-grid">
         {data.events.map((event) => (
-          <Col key={event._id}>
-            <EventComponent
-              eventInfo={event}
-              userId={userId}
-            />
-          </Col>
+          <EventComponent
+            key={event._id}
+            eventInfo={event}
+            userId={userId}
+          />
         ))}
-      </Row>
-    </Container>
+      </div>
+    </div>
   );
 };
 

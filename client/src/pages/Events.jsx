@@ -4,6 +4,7 @@ import { useQuery } from '@apollo/client';
 import EventsList from '../components/EventList'
 import { GET_EVENTS } from '../utils/queries';
 import { useSongContext } from '../utils/GlobalState';
+import './Events.css'; // We'll create this CSS file next
 
 const Events = () => {
   const { state } = useSongContext();
@@ -22,14 +23,16 @@ const Events = () => {
   const events = data?.events || [];
 
   return (
-    <div>
-      <h1>Events</h1>
-      <button 
-        className="btn btn-dark m-2"
-        onClick={handleEventCreate}
-      >
-        Create an Event
-      </button>
+    <div className="events-page">
+      <h1 className="events-title">Events</h1>
+      <div className="create-event-container">
+        <button 
+          className="btn btn-primary create-event-button"
+          onClick={handleEventCreate}
+        >
+          Create an Event
+        </button>
+      </div>
       <EventsList events={events} userId={userId} />
     </div>
   );
