@@ -1,18 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaThumbsUp } from 'react-icons/fa';
 import { useMutation } from '@apollo/client';
-import { ADD_UPVOTE } from '../utils/mutations';
+import { ADD_UPVOTE, REMOVE_UPVOTE } from '../utils/mutations';
 
 const Song = ({ song, onUpvote }) => {
   const [upvotes, setUpvotes] = useState(song.upvotes.length);
-  const [addUpvote, { loading, error }] = useMutation(ADD_UPVOTE);
+  const [hasUpvoted, setHasUpvoted] = useState(false);
+
+  const [addUpvote, { loading: addingLoading, error: addError }] = useMutation(ADD_UPVOTE);
+  const [removeUpvote, { loading: removingLoading, error: removeError }] = useMutation(REMOVE_UPVOTE);
+
+  // Initialize guestId on component mount
+  useEffect(() => {
+    let guestId = localStorage.getItem('guestId');
+    if (!guestId) {
+      guestId = `guest_${Date.now()}`;
+      localStorage.setItem('guestId', guestId);
+    }
+  }, []);
+
+  useEffect(() => {
+    const upvoteStatus = localStorage.getItem(`hasVoted_${song._id}`);
+    if (upvoteStatus === null) {
+      localStorage.setItem(`hasVoted_${song._id}`, 'false');
+      setHasUpvoted(false);
+    } else {
+      setHasUpvoted(upvoteStatus === 'true');
+    }
+  }, [song._id]);
 
   const handleUpvote = async () => {
+    const guestId = localStorage.getItem('guestId');
+
+    if (!guestId) {
+      alert('You need to be logged in to upvote.');
+      return;
+    }
+
     try {
-      await addUpvote({ variables: { songRequestId: song._id } });
-      setUpvotes(upvotes + 1); // Update upvote count optimistically
+      if (hasUpvoted) {
+        await removeUpvote({ variables: { upvoteId: guestId || song._id } });
+        setUpvotes(upvotes - 1);
+        localStorage.setItem(`hasVoted_${song._id}`, 'false');
+      } else {
+        await addUpvote({ variables: { songRequestId: song._id } });
+        setUpvotes(upvotes + 1);
+        localStorage.setItem(`hasVoted_${song._id}`, 'true');
+      }
+      setHasUpvoted(!hasUpvoted);
       if (onUpvote) {
-        onUpvote(song._id); // Call parent handler if needed
+        onUpvote(song._id);
       }
     } catch (err) {
       console.error('Error upvoting:', err);
@@ -24,15 +61,15 @@ const Song = ({ song, onUpvote }) => {
     <div className="border border-success p-3 rounded transition-shadow hover-shadow-sm m-2">
       <header className="h5 fw-bold text-dark">{song.title}</header>
       <p className="mb-1">Artist: {song.artist}</p>
-      <p className="mb-1">Votes: {song.upvotes.length}</p>
+      <p className="mb-1">Votes: {upvotes}</p>
       <button
-        className="btn btn-dark"
+        className={`btn ${hasUpvoted ? 'btn-success' : 'btn-dark'}`}
         onClick={handleUpvote}
-        disabled={loading} // Disable button while loading
+        disabled={addingLoading || removingLoading} // Disable button while loading
       >
-        <FaThumbsUp /> {loading ? 'Upvoting...' : 'Upvote'}
+        <FaThumbsUp /> {hasUpvoted ? 'Unvote' : 'Upvote'}
       </button>
-      {error && <p className="text-danger mt-2">Error upvoting song.</p>}
+      {(addError || removeError) && <p className="text-danger mt-2">Error: {addError?.message || removeError?.message}</p>}
     </div>
   );
 };

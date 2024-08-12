@@ -58,14 +58,20 @@ export const ADD_UPVOTE = gql`
   mutation addUpvote($songRequestId: ID!) {
     addUpvote(songRequestId: $songRequestId) {
       _id
-      user {
-        _id
-        username
-      }
-      songRequest {
-        _id
-        title
-      }
+      title
+      artist
+      upvotes
+    }
+  }
+`;
+
+export const REMOVE_UPVOTE = gql`
+  mutation removeUpvote($songRequestId: ID!) {
+    removeUpvote(songRequestId: $songRequestId) {
+      _id
+      title
+      artist
+      upvotes
     }
   }
 `;

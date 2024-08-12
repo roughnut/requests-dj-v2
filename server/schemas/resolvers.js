@@ -167,20 +167,48 @@ const resolvers = {
     },
     // Add an upvote to a song request
     addUpvote: async (parent, { songRequestId }, context) => {
-      if (context.user) {
-        const upvote = await Upvote.create({
-          user: context.user._id,
-          songRequest: songRequestId,
+      try {
+        // Find the song request and increment the upvote count
+        const songRequest = await SongRequest.findByIdAndUpdate(
+          songRequestId,
+          { $inc: { upvotes: 1 } }, // Increment the upvote count
+          { new: true }
+        );
+
+        if (!songRequest) {
+          throw new GraphQLError('Song request not found', {
+            extensions: { code: 'NOT_FOUND' },
+          });
+        }
+
+        return songRequest;
+      } catch (error) {
+        throw new GraphQLError('Failed to upvote', {
+          extensions: { code: 'INTERNAL_SERVER_ERROR', error: error.message },
         });
-
-        await SongRequest.findByIdAndUpdate(songRequestId, { $push: { upvotes: upvote._id } });
-        await User.findByIdAndUpdate(context.user._id, { $push: { upvotes: upvote._id } });
-
-        return upvote;
       }
-      throw new GraphQLError('You need to be logged in!', {
-        extensions: { code: 'UNAUTHENTICATED' },
-      });
+    },
+    removeUpvote: async (parent, { songRequestId }, context) => {
+      try {
+        // Find the song request and decrement the upvote count
+        const songRequest = await SongRequest.findByIdAndUpdate(
+          songRequestId,
+          { $inc: { upvotes: -1 } }, // Decrement the upvote count
+          { new: true }
+        );
+
+        if (!songRequest) {
+          throw new GraphQLError('Song request not found', {
+            extensions: { code: 'NOT_FOUND' },
+          });
+        }
+
+        return songRequest;
+      } catch (error) {
+        throw new GraphQLError('Failed to remove upvote', {
+          extensions: { code: 'INTERNAL_SERVER_ERROR', error: error.message },
+        });
+      }
     },
     // Remove an event
     removeEvent: async (parent, { eventId }, context) => {
@@ -210,23 +238,6 @@ const resolvers = {
         await User.findByIdAndUpdate(context.user._id, { $pull: { songRequests: songRequestId } });
 
         return songRequest;
-      }
-      throw new GraphQLError('You need to be logged in!', {
-        extensions: { code: 'UNAUTHENTICATED' },
-      });
-    },
-    // Remove an upvote
-    removeUpvote: async (parent, { upvoteId }, context) => {
-      if (context.user) {
-        const upvote = await Upvote.findOneAndDelete({
-          _id: upvoteId,
-          user: context.user._id,
-        });
-
-        await SongRequest.findByIdAndUpdate(upvote.songRequest, { $pull: { upvotes: upvoteId } });
-        await User.findByIdAndUpdate(context.user._id, { $pull: { upvotes: upvoteId } });
-
-        return upvote;
       }
       throw new GraphQLError('You need to be logged in!', {
         extensions: { code: 'UNAUTHENTICATED' },
