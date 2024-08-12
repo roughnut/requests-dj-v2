@@ -23,10 +23,10 @@ const songRequestSchema = new mongoose.Schema({
     ref: 'User',
   },
   // Reference to the upvotes for this song
-  upvotes: [{
+  upvotes: {
     type: Number,
     default: 0,
-  }]
+  }
 }, {
   // Enable timestamps for createdAt and updatedAt
   timestamps: true
