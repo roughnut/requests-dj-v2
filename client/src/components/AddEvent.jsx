@@ -10,6 +10,7 @@ const AddEvent = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState('');
+  const [error, setError] = useState(null);
 
   const { state, setEvents } = useSongContext();
   const navigate = useNavigate();
@@ -87,59 +88,57 @@ const AddEvent = () => {
   };
 
   return (
-    <Container>
-      <Row className="my-5">
-        <Col>
-          <div className="p-3 mb-2 bg-light rounded-3">
-            <h2 className="display-3">Create Event</h2>
+    <Container className="d-flex justify-content-center align-items-center">
+      <Row className="justify-content-center w-100">
+        <Col xs={12} md={8} lg={6}>
+          <div className="p-4 bg-light rounded-3 shadow">
+            <h1 className="display-4 text-center">Create a New Event</h1>
+            <p className="lead text-center">Fill out the form below to add a new event to your lineup.</p>
+            <Form onSubmit={handleSubmit}>
+              <Form.Group className="mb-4">
+                <Form.Label htmlFor="event-title">Event Title</Form.Label>
+                <Form.Control
+                  type="text"
+                  id="event-title"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  placeholder="Enter event title"
+                />
+              </Form.Group>
+              <Form.Group className="mb-4">
+                <Form.Label htmlFor="event-desc">Event Description</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={4}
+                  id="event-desc"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  required
+                  placeholder="Describe your event"
+                />
+              </Form.Group>
+              <Form.Group className="mb-4">
+                <Form.Label htmlFor="event-date">Event Date</Form.Label>
+                <Form.Control
+                  type="date"
+                  id="event-date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  required
+                />
+              </Form.Group>
+              <Button
+                variant="primary"
+                type="submit"
+                className="w-100 mt-4"
+                size="lg"
+              >
+                Create Event
+              </Button>
+              {error && <p className="text-danger mt-2 text-center">{error}</p>}
+            </Form>
           </div>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-4">
-              <Form.Label htmlFor="event-title">Event Title</Form.Label>
-              <Form.Control
-                type="text"
-                id="event-title"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                placeholder="Enter event title"
-              />
-            </Form.Group>
-            <Form.Group className="mb-4">
-              <Form.Label htmlFor="event-desc">Event Description</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={4}
-                id="event-desc"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                required
-                placeholder="Describe your event"
-              />
-            </Form.Group>
-            <Form.Group className="mb-4">
-              <Form.Label htmlFor="event-date">Event Date</Form.Label>
-              <Form.Control
-                type="date"
-                id="event-date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                required
-              />
-            </Form.Group>
-            <Button
-              variant="primary"
-              type="submit"
-              className="w-100 mt-4 py-2"
-              size="lg"
-            >
-              Create
-            </Button>
-          </Form>
         </Col>
       </Row>
     </Container>

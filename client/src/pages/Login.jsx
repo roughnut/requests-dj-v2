@@ -36,6 +36,7 @@ export default function Login() {
       setUser(data.login.user);
       // Redirect to home page after successful login
       navigate('/dashboard');
+      window.location.reload();
     } catch (e) {
       console.error(e);
     }
@@ -48,10 +49,10 @@ export default function Login() {
 
   return (
     <div className='row justify-content-center'>
-      <h1 className='col-12'>Login</h1>
+      <h1 className='col-6'>Login</h1>
       <form onSubmit={handleFormSubmit}>
         <input
-          className='col-12 m-2'
+          className='col-6 m-2'
           type="text"
           name="username"
           value={formState.username}
@@ -59,16 +60,16 @@ export default function Login() {
           placeholder="Username"
         />
         <input
-          className='col-12 m-2' 
+          className='col-6 m-2' 
           type="password"
           name="password"
           value={formState.password}
           onChange={handleChange}
           placeholder="Password"
         />
-        <button className='col-12 m-2' type="submit">Login</button>
+        <button className='col-6 m-2' type="submit">Login</button>
       </form>
-      {error && <p className='col-12 m-2'>Username or Password Incorrect</p>}
+      {error && <p className='col-6 m-2'>Username or Password Incorrect</p>}
     </div>
   );
 }
