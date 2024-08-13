@@ -14,7 +14,22 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true
-  }
+  },
+  // Events field
+  events: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Event'
+  }],
+  // SongRequests field
+  songRequests: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'SongRequest'
+  }],
+  // Upvotes field
+  upvotes: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Upvote'
+  }]
 }, {
   // Enable timestamps for createdAt and updatedAt
   timestamps: true

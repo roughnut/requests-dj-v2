@@ -2,20 +2,20 @@ const { gql } = require('graphql-tag');
 
 const typeDefs = gql`
   type User {
-    _id: ID!                 # Unique identifier for the user
-    username: String!        # Username of the user
-    events: [Event]          # List of events associated with the user
-    songRequests: [SongRequest] # List of song requests made by the user
-    upvotes: [Upvote]        # List of upvotes made by the user
+    _id: ID!    
+    username: String!    
+    events: [Event]       
+    songRequests: [SongRequest]
+    upvotes: [Upvote]     
   }
 
   type Event {
-    _id: ID!                 # Unique identifier for the event
-    name: String!            # Name of the event
-    description: String!     # Description of the event
-    date: String!            # Date of the event
-    user: User!              # User (DJ) who created the event
-    songRequests: [SongRequest] # List of song requests for this event
+    _id: ID!                
+    name: String!       
+    description: String     
+    date: String!            
+    user: User!        
+    songRequests: [SongRequest] 
   }
 
   type SongRequest {
@@ -29,7 +29,7 @@ const typeDefs = gql`
 
   type Upvote {
     _id: ID!                 # Unique identifier for the upvote
-    user: User!              # User who made the upvote
+    user: User!            
     songRequest: SongRequest! # Song request that was upvoted
   }
 
@@ -41,7 +41,7 @@ const typeDefs = gql`
 
   # Query type defines all the available queries
   type Query {
-    me: User                 # Get the currently authenticated user
+    me: User                 
     users: [User]            # Get all users
     user(username: String!): User # Get a user by username
     events: [Event]          # Get all events
