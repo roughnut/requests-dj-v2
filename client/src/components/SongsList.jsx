@@ -2,6 +2,7 @@
 import { useQuery, /*useMutation*/ } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import Song from './Song';
+import './SongsList.css';
 import { GET_SONG_REQUESTS } from '../utils/queries';
 // import { ADD_UPVOTE } from '../utils/mutations';
 

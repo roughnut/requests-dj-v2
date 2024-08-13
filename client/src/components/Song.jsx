@@ -115,10 +115,10 @@ const Song = ({ song, onUpvote, addUpvote, refetch }) => {
   }
 
   return (
-    <div className="border border-success p-3 rounded transition-shadow hover-shadow-sm m-2">
-      <header className="h5 fw-bold text-dark">{song.title}</header>
-      <p className="mb-1">Artist: {song.artist}</p>
-      <p className="mb-1">Votes: {upvotes}</p>
+    <div className="song-card">
+      <header className="song-title">{song.title}</header>
+      <p className="song-artist">Artist: {song.artist}</p>
+      <p className="song-votes">Votes: {upvotes}</p>
       <button
         className={`btn ${hasUpvoted ? 'btn-success' : 'btn-dark'}`}
         onClick={handleButtonClick}
