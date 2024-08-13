@@ -14,7 +14,7 @@ export default function Login() {
   useEffect(() => {
     // If user is already authenticated, redirect to home page
     if (state.isAuthenticated) {
-      navigate('/');
+      navigate('/dashboard');
     }
   }, [state.isAuthenticated, navigate]);
 
@@ -35,7 +35,7 @@ export default function Login() {
       localStorage.setItem('id_token', data.login.token);
       setUser(data.login.user);
       // Redirect to home page after successful login
-      navigate('/');
+      navigate('/dashboard');
     } catch (e) {
       console.error(e);
     }

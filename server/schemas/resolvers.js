@@ -80,6 +80,7 @@ const resolvers = {
         .populate({
           path: "upvotes",
         })
+        .collation({ locale: 'en', strength: 2 })
         .sort({ upvotes: -1, title: 1 });
 
       console.log("Song Requests:", requests);
