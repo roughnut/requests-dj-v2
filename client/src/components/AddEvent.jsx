@@ -90,9 +90,8 @@ const AddEvent = () => {
     <Container>
       <Row className="my-5">
         <Col>
-          <div className="p-5 mb-4 bg-light rounded-3">
-            <h1 className="display-4">Create a New Event</h1>
-            <p className="lead">Fill out the form below to add a new event to your lineup.</p>
+          <div className="p-3 mb-2 bg-light rounded-3">
+            <h2 className="display-3">Create Event</h2>
           </div>
         </Col>
       </Row>
@@ -138,7 +137,7 @@ const AddEvent = () => {
               className="w-100 mt-4 py-2"
               size="lg"
             >
-              Create Event
+              Create
             </Button>
           </Form>
         </Col>
