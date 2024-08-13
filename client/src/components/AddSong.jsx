@@ -54,50 +54,46 @@ const AddSong = () => {
   };
 
   return (
-    <Container>
-      <Row className="my-5">
-        <Col>
-          <div className="p-5 mb-4 bg-light rounded-3">
-            <h1 className="display-4">Request a Song</h1>
-            <p className="lead">Fill out the form below to request a song for the event.</p>
+    <Container className="d-flex justify-content-center align-items-center">
+      <Row className="justify-content-center w-100">
+        <Col xs={12} md={8} lg={6}>
+          <div className="p-4 bg-light rounded-3 shadow">
+            <h1 className="display-4 text-center">Request a Song</h1>
+            <p className="lead text-center">Fill out the form below to request a song for the event.</p>
+            <Form onSubmit={handleSubmit}>
+              <Form.Group className="mb-3">
+                <Form.Label htmlFor="song-title">Song Title</Form.Label>
+                <Form.Control
+                  type="text"
+                  id="song-title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  required
+                  placeholder="Enter song title"
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label htmlFor="song-artist">Song Artist</Form.Label>
+                <Form.Control
+                  type="text"
+                  id="song-artist"
+                  value={artist}
+                  onChange={(e) => setArtist(e.target.value)}
+                  placeholder="Enter artist name"
+                />
+              </Form.Group>
+              <Button
+                variant="primary"
+                type="submit"
+                className="w-100 mt-3"
+                size="lg"
+                disabled={loading} // Disable button while loading
+              >
+                {loading ? 'Submitting...' : 'Submit'}
+              </Button>
+              {error && <p className="text-danger mt-2 text-center">{error}</p>}
+            </Form>
           </div>
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-4">
-              <Form.Label htmlFor="song-title">Song Title</Form.Label>
-              <Form.Control
-                type="text"
-                id="song-title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                required
-                placeholder="Enter song title"
-              />
-            </Form.Group>
-            <Form.Group className="mb-4">
-              <Form.Label htmlFor="song-artist">Song Artist</Form.Label>
-              <Form.Control
-                type="text"
-                id="song-artist"
-                value={artist}
-                onChange={(e) => setArtist(e.target.value)}
-                placeholder="Enter artist name"
-              />
-            </Form.Group>
-            <Button
-              variant="primary"
-              type="submit"
-              className="w-100 mt-4 py-2"
-              size="lg"
-              disabled={loading} // Disable button while loading
-            >
-              {loading ? 'Submitting...' : 'Submit'}
-            </Button>
-            {error && <p className="text-danger mt-2">{error}</p>}
-          </Form>
         </Col>
       </Row>
     </Container>
