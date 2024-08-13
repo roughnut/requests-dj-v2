@@ -1,31 +1,49 @@
-import React, { useState } from 'react';
-import { useQuery, useMutation } from '@apollo/client';
+// import React from 'react';
+import { useQuery, /*useMutation*/ } from '@apollo/client';
 import { useParams } from 'react-router-dom';
 import Song from './Song';
-import { GET_SONG_REQUESTS } from '../utils/queries'; // Import your GraphQL query
-import { ADD_UPVOTE } from '../utils/mutations'; // Import a mutation for upvoting (if you have one)
+import { GET_SONG_REQUESTS } from '../utils/queries';
+// import { ADD_UPVOTE } from '../utils/mutations';
 
 const SongsList = () => {
-  const { id: eventId } = useParams(); // Get the event ID from the URL
+  const { id: eventId } = useParams();
 
-  // Fetch songs from the server using the GET_SONG_REQUESTS query
-  const { loading, error, data } = useQuery(GET_SONG_REQUESTS, {
+  const { loading, error, data, /* refetch */ } = useQuery(GET_SONG_REQUESTS, {
     variables: { event: eventId },
+    fetchPolicy: 'cache-and-network',
   });
 
-  // Optionally, use a mutation to handle upvotes
-  const [upvoteSong] = useMutation(ADD_UPVOTE);
+  // const [upvoteSong] = useMutation(ADD_UPVOTE);
 
-  const handleUpvote = async (songId) => {
-    try {
-      await upvoteSong({
-        variables: { id: songId },
-        refetchQueries: [{ query: GET_SONG_REQUESTS, variables: { event: eventId } }],
-      });
-    } catch (error) {
-      console.error('Error upvoting song:', error);
-    }
-  };
+  // const handleUpvote = async (songId) => {
+  //   try {
+  //     await upvoteSong({
+  //       variables: { songRequestId: songId },
+  //       update: (cache, { data: { addUpvote } }) => {
+  //         const existingData = cache.readQuery({
+  //           query: GET_SONG_REQUESTS,
+  //           variables: { event: eventId },
+  //         });
+
+  //         if (existingData && existingData.songRequests) {
+  //           const updatedRequests = existingData.songRequests.map((song) =>
+  //             song._id === addUpvote._id ? { ...song, ...addUpvote } : song
+  //           );
+
+  //           cache.writeQuery({
+  //             query: GET_SONG_REQUESTS,
+  //             variables: { event: eventId },
+  //             data: { songRequests: updatedRequests },
+  //           });
+  //         }
+  //       },
+  //     });
+  //     // Refetch to ensure data consistency
+  //     await refetch();
+  //   } catch (error) {
+  //     console.error('Error upvoting song:', error);
+  //   }
+  // };
 
   if (loading) return <p>Loading songs...</p>;
   if (error) return <p>Error loading songs: {error.message}</p>;
@@ -39,7 +57,7 @@ const SongsList = () => {
         {songs.length > 0 ? (
           songs.map(song => (
             <div className="col-12 mb-3" key={song._id}>
-              <Song key={song.id} song={song} onUpvote={handleUpvote} />
+              <Song song={song} /* onUpvote={handleUpvote} */ />
             </div>
           ))
         ) : (

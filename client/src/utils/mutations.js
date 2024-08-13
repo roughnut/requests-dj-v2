@@ -55,8 +55,8 @@ export const ADD_SONG_REQUEST = gql`
 `;
 
 export const ADD_UPVOTE = gql`
-  mutation addUpvote($songRequestId: ID!) {
-    addUpvote(songRequestId: $songRequestId) {
+  mutation addUpvote($songRequestId: ID!, $guestId: String) {
+    addUpvote(songRequestId: $songRequestId, guestId: $guestId) {
       _id
       title
       artist
@@ -66,8 +66,8 @@ export const ADD_UPVOTE = gql`
 `;
 
 export const REMOVE_UPVOTE = gql`
-  mutation removeUpvote($songRequestId: ID!) {
-    removeUpvote(songRequestId: $songRequestId) {
+  mutation removeUpvote($songRequestId: ID!, $guestId: String) {
+    removeUpvote(songRequestId: $songRequestId, guestId: $guestId) {
       _id
       title
       artist
@@ -95,4 +95,3 @@ export const UPDATE_EVENT = gql`
     }
   }
 `;
-// some comment
