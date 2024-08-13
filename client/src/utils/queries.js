@@ -6,7 +6,6 @@ export const GET_ME = gql`
     me {
       _id
       username
-      is_dj
       events {
         _id
         name
@@ -17,8 +16,15 @@ export const GET_ME = gql`
         _id
         title
         artist
+        upvotes
       }
-      upvotes
+      upvotes {
+        _id
+        songRequest {
+          _id
+          title
+        }
+      }
     }
   }
 `;
@@ -29,7 +35,6 @@ export const GET_USERS = gql`
     users {
       _id
       username
-      is_dj
     }
   }
 `;
@@ -40,7 +45,6 @@ export const GET_USER = gql`
     user(username: $username) {
       _id
       username
-      is_dj
       events {
         _id
         name
@@ -51,8 +55,15 @@ export const GET_USER = gql`
         _id
         title
         artist
+        upvotes
       }
-      upvotes
+      upvotes {
+        _id
+        songRequest {
+          _id
+          title
+        }
+      }
     }
   }
 `;
