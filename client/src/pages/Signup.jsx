@@ -21,15 +21,16 @@ export default function Signup() {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     try {
+      console.log('Form State: ', formState);
       const { data } = await addUser({
         variables: { ...formState },
       });
       localStorage.setItem('id_token', data.addUser.token);
       setUser(data.addUser.user);
-      // Redirect to home page after successful signup
-      navigate('/');
-    } catch (e) {
-      console.error(e);
+      // Redirect to events page after successful signup
+      navigate('/events');
+    } catch (err) {
+      console.error('Signup error: ', err);
     }
   };
 

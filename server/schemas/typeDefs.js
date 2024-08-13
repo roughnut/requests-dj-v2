@@ -1,7 +1,6 @@
 const { gql } = require('graphql-tag');
 
 const typeDefs = gql`
-  # User type represents a user in the system
   type User {
     _id: ID!                 # Unique identifier for the user
     username: String!        # Username of the user
@@ -10,7 +9,6 @@ const typeDefs = gql`
     upvotes: [Upvote]        # List of upvotes made by the user
   }
 
-  # Event type represents a music event
   type Event {
     _id: ID!                 # Unique identifier for the event
     name: String!            # Name of the event
@@ -20,7 +18,6 @@ const typeDefs = gql`
     songRequests: [SongRequest] # List of song requests for this event
   }
 
-  # SongRequest type represents a song request made by a user for an event
   type SongRequest {
     _id: ID!                 # Unique identifier for the song request
     title: String!           # Title of the requested song
@@ -30,7 +27,6 @@ const typeDefs = gql`
     upvotes: Int        # Number of upvotes for this song request
   }
 
-  # Upvote type represents an upvote made by a user for a song request
   type Upvote {
     _id: ID!                 # Unique identifier for the upvote
     user: User!              # User who made the upvote
