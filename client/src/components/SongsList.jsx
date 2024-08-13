@@ -51,9 +51,9 @@ const SongsList = () => {
   const songs = data?.songRequests || [];
 
   return (
-    <div className="container mt-4">
-      <h2>Songs List</h2>
-      <div className="row">
+    <div className="songs-list">
+      <h2 className='songs-list-title'>Songs List</h2>
+      <div className="events-grid">
         {songs.length > 0 ? (
           songs.map(song => (
             <div className="col-12 mb-3" key={song._id}>

@@ -1,0 +1,66 @@
+.songs-list {
+  width: 100%;
+}
+
+.songs-list-title {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.songs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.song-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.song-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.song-title {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.4em;
+}
+
+.song-host,
+.song-artist,
+.song-votes {
+  margin-bottom: 10px;
+}
+
+
+/* Unused Currently */
+/* .song-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.song-action-btn {
+  flex: 1;
+  margin: 0 5px;
+} */
+
+.loading,
+.error {
+  text-align: center;
+  padding: 20px;
+  font-size: 1.2em;
+}
+
+@media (max-width: 768px) {
+  .songs-grid {
+    grid-template-columns: 1fr;
+  }
+}
