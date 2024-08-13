@@ -28,7 +28,7 @@ export default function Signup() {
       localStorage.setItem('id_token', data.addUser.token);
       setUser(data.addUser.user);
       // Redirect to events page after successful signup
-      navigate('/events');
+      navigate('/dashboard');
     } catch (err) {
       console.error('Signup error: ', err);
     }

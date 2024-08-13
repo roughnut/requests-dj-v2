@@ -19,6 +19,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import EventPage from './pages/EventPage.jsx';
 import AddSong from './components/AddSong.jsx';
 import UpdateEvent from './components/UpdateEvent.jsx';
+import Dashboard from './pages/Dashboard.jsx';
 
 // Define the accessible routes, and which components respond to which URL
 const router = createBrowserRouter([
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
       {
         path: '/events/:id',
         element: <EventPage />,
+      },
+      {
+        path: '/dashboard',
+        element: <Dashboard />,
       }
     ],
   },

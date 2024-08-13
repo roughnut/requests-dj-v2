@@ -21,7 +21,10 @@ export default function Navbar() {
             <Nav.Link as={Link} to="/">Home</Nav.Link>
             <Nav.Link as={Link} to="/events">Events</Nav.Link>
             {state.isAuthenticated ? (
+              <>
+              <Nav.Link as={Link} to="/dashboard">Dashboard</Nav.Link>
               <Nav.Link as={Link} to="/" onClick={handleLogout}>Logout</Nav.Link>
+              </>
             ) : (
               <>
                 <Nav.Link as={Link} to="/login">Login</Nav.Link>
