@@ -79,7 +79,8 @@ const resolvers = {
         })
         .populate({
           path: "upvotes",
-        });
+        })
+        .sort({ upvotes: -1, title: 1 });
 
       console.log("Song Requests:", requests);
       return requests;

@@ -4,7 +4,7 @@ import { FaThumbsUp } from 'react-icons/fa';
 import { useMutation } from '@apollo/client';
 import { ADD_UPVOTE, REMOVE_UPVOTE } from '../utils/mutations';
 
-const Song = ({ song, onUpvote, addUpvote }) => {
+const Song = ({ song, onUpvote, addUpvote, refetch }) => {
   const [upvotes, setUpvotes] = useState(song?.upvotes || 0);
   const [hasUpvoted, setHasUpvoted] = useState(false);
   const [guestId, setGuestId] = useState(null);
@@ -71,6 +71,7 @@ const Song = ({ song, onUpvote, addUpvote }) => {
           const newUpvoteStatus = !hasUpvoted;
           setHasUpvoted(newUpvoteStatus);
           localStorage.setItem(`hasVoted_${song._id}_${guestId}`, newUpvoteStatus.toString());
+          refetch();
         } else {
           console.error('Unexpected mutation response:', JSON.stringify(data, null, 2));
         }
