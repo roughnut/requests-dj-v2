@@ -26,7 +26,10 @@ const songRequestSchema = new mongoose.Schema({
   upvotes: {
     type: Number,
     default: 0,
-  }
+  },
+  upvoters: [{
+    type: String,
+  }],
 }, {
   // Enable timestamps for createdAt and updatedAt
   timestamps: true

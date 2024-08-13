@@ -8,7 +8,7 @@ import { GET_SONG_REQUESTS } from '../utils/queries';
 const SongsList = () => {
   const { id: eventId } = useParams();
 
-  const { loading, error, data, /* refetch */ } = useQuery(GET_SONG_REQUESTS, {
+  const { loading, error, data, refetch  } = useQuery(GET_SONG_REQUESTS, {
     variables: { event: eventId },
     fetchPolicy: 'cache-and-network',
   });
@@ -57,7 +57,7 @@ const SongsList = () => {
         {songs.length > 0 ? (
           songs.map(song => (
             <div className="col-12 mb-3" key={song._id}>
-              <Song song={song} /* onUpvote={handleUpvote} */ />
+              <Song song={song} refetch={refetch} />
             </div>
           ))
         ) : (
