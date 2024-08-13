@@ -34,8 +34,8 @@ const AddSong = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!title || !artist) {
-      alert('Please fill out all fields.');
+    if (!title) {
+      alert('Please enter a song title.');
       return;
     }
 
@@ -84,7 +84,6 @@ const AddSong = () => {
                 id="song-artist"
                 value={artist}
                 onChange={(e) => setArtist(e.target.value)}
-                required
                 placeholder="Enter artist name"
               />
             </Form.Group>

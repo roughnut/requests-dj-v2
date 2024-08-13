@@ -21,14 +21,13 @@ const typeDefs = gql`
   }
 
   # SongRequest type represents a song request made by a user for an event
-  # user is nullable to allow unauthenticated guest users
   type SongRequest {
-    _id: ID!                 
-    title: String!           
-    artist: String           
-    event: Event!        
-    user: User             
-    upvotes: [Upvote] 
+    _id: ID!                 # Unique identifier for the song request
+    title: String!           # Title of the requested song
+    artist: String           # Artist of the requested song (optional)
+    event: Event!            # Event for which the song is requested
+    user: User              # User who made the song request
+    upvotes: Int        # Number of upvotes for this song request
   }
 
   # Upvote type represents an upvote made by a user for a song request
@@ -57,15 +56,15 @@ const typeDefs = gql`
 
   # Mutation type defines all the available mutations
   type Mutation {
-    addUser(username: String!, password: String!): Auth # Add a new user
-    login(username: String!, password: String!): Auth # Login a user
-    addEvent(name: String!, description: String!, date: String!): Event # Add a new event
-    addSongRequest(eventId: ID!, title: String!, artist: String): SongRequest # Add a new song request
-    addUpvote(songRequestId: ID!): Upvote # Add an upvote to a song request
+    addUser(username: String!, password: String!): Auth 
+    login(username: String!, password: String!): Auth #
+    addEvent(name: String!, description: String!, date: String!): Event 
+    addSongRequest(eventId: ID!, title: String!, artist: String): SongRequest
+    addUpvote(songRequestId: ID!, guestId: String): SongRequest 
     removeEvent(eventId: ID!): Event # Remove an event
-    removeSongRequest(songRequestId: ID!): SongRequest # Remove a song request
-    removeUpvote(upvoteId: ID!): Upvote # Remove an upvote
-    updateEvent(eventId: ID!, name: String!, description: String!, date: String!): Event # Update an event
+    removeSongRequest(songRequestId: ID!): SongRequest 
+    removeUpvote(songRequestId: ID!, guestId: String): SongRequest 
+    updateEvent(eventId: ID!, name: String!, description: String!, date: String!): Event 
   }
 `;
 

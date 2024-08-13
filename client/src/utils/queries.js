@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client';
 
+// Query to get the currently logged-in user
 export const GET_ME = gql`
   query me {
     me {
@@ -17,17 +18,12 @@ export const GET_ME = gql`
         title
         artist
       }
-      upvotes {
-        _id
-        songRequest {
-          _id
-          title
-        }
-      }
+      upvotes
     }
   }
 `;
 
+// Query to get all users
 export const GET_USERS = gql`
   query users {
     users {
@@ -38,6 +34,7 @@ export const GET_USERS = gql`
   }
 `;
 
+// Query to get a user by username
 export const GET_USER = gql`
   query user($username: String!) {
     user(username: $username) {
@@ -55,17 +52,12 @@ export const GET_USER = gql`
         title
         artist
       }
-      upvotes {
-        _id
-        songRequest {
-          _id
-          title
-        }
-      }
+      upvotes
     }
   }
 `;
 
+// Query to get all events
 export const GET_EVENTS = gql`
   query events {
     events {
@@ -81,11 +73,13 @@ export const GET_EVENTS = gql`
         _id
         title
         artist
+        upvotes
       }
     }
   }
 `;
 
+// Query to get a single event by ID
 export const GET_EVENT = gql`
   query event($_id: ID!) {
     event(_id: $_id) {
@@ -101,18 +95,17 @@ export const GET_EVENT = gql`
         _id
         title
         artist
-        upvotes {
+        user {
           _id
-          user {
-            _id
-            username
-          }
+          username
         }
+        upvotes
       }
     }
   }
 `;
 
+// Query to get song requests for a specific event
 export const GET_SONG_REQUESTS = gql`
   query songRequests($event: ID!) {
     songRequests(event: $event) {
@@ -123,17 +116,16 @@ export const GET_SONG_REQUESTS = gql`
         _id
         name
       }
-      upvotes {
+      user {
         _id
-        user {
-          _id
-          username
-        }
+        username
       }
+      upvotes
     }
   }
 `;
 
+// Query to get a specific song request by ID
 export const GET_SONG_REQUEST = gql`
   query songRequest($_id: ID!) {
     songRequest(_id: $_id) {
@@ -144,13 +136,11 @@ export const GET_SONG_REQUEST = gql`
         _id
         name
       }
-      upvotes {
+      user {
         _id
-        user {
-          _id
-          username
-        }
+        username
       }
+      upvotes
     }
   }
 `;

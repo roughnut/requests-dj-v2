@@ -17,11 +17,16 @@ const songRequestSchema = new mongoose.Schema({
     ref: 'Event',
     required: true
   },
-  // Reference to the upvotes for this song
-  upvotes: [{
+  // Reference to the user who made the request
+  user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Upvote'
-  }]
+    ref: 'User',
+  },
+  // Reference to the upvotes for this song
+  upvotes: {
+    type: Number,
+    default: 0,
+  }
 }, {
   // Enable timestamps for createdAt and updatedAt
   timestamps: true
