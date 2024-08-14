@@ -36,6 +36,19 @@ const EventComponent = ({ eventInfo, username }) => {
     }
   };
 
+  const handleShareClick = (e) => {
+    e.stopPropagation();
+    const eventUrl = `${window.location.origin}/events/${eventInfo._id}`;
+    navigator.clipboard.writeText(eventUrl)
+      .then(() => {
+        alert('Event link copied to clipboard!');
+      })
+      .catch((err) => {
+        console.error('Failed to copy event link: ', err);
+        alert('Failed to copy event link');
+      });
+  };
+
   return (
     <div
       className="event-card"
@@ -47,23 +60,31 @@ const EventComponent = ({ eventInfo, username }) => {
       </p>
       <p className="event-description">{eventInfo.description}</p>
       <p className="event-date">Date: {formatDate(eventInfo.date)}</p>
-      {eventInfo.user?._id === userId && (
-        <div className="event-actions">
-          <Link
-            to={`/events/${eventInfo._id}/update`}
-            className="btn btn-outline-primary event-action-btn"
-            onClick={(e) => e.stopPropagation()}
-          >
-            Update Event
-          </Link>
-          <button 
-            className="btn btn-outline-danger event-action-btn"
-            onClick={handleDeleteClick}
-          >
-            Delete Event
-          </button>
-        </div>
-      )}
+      <div className="event-actions">
+        <button 
+          className="btn btn-outline-primary event-action-btn"
+          onClick={handleShareClick}
+        >
+          Share Event
+        </button>
+        {eventInfo.user?._id === userId && (
+          <>
+            <Link
+              to={`/events/${eventInfo._id}/update`}
+              className="btn btn-outline-primary event-action-btn"
+              onClick={(e) => e.stopPropagation()}
+            >
+              Update Event
+            </Link>
+            <button 
+              className="btn btn-outline-danger event-action-btn"
+              onClick={handleDeleteClick}
+            >
+              Delete Event
+            </button>
+          </>
+        )}
+      </div>
     </div>
   );
 };
