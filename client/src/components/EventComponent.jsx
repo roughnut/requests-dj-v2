@@ -67,23 +67,19 @@ const EventComponent = ({ eventInfo, username }) => {
         >
           Share Event
         </button>
-        {eventInfo.user?._id === userId && (
-          <>
-            <Link
-              to={`/events/${eventInfo._id}/update`}
-              className="btn btn-outline-primary event-action-btn"
-              onClick={(e) => e.stopPropagation()}
-            >
-              Update Event
-            </Link>
-            <button 
-              className="btn btn-outline-danger event-action-btn"
-              onClick={handleDeleteClick}
-            >
-              Delete Event
-            </button>
-          </>
-        )}
+        <Link
+          to={`/events/${eventInfo._id}/update`}
+          className="btn btn-outline-primary event-action-btn"
+          onClick={(e) => e.stopPropagation()}
+        >
+          Update Event
+        </Link>
+        <button 
+          className="btn btn-outline-danger event-action-btn"
+          onClick={handleDeleteClick}
+        >
+          Delete Event
+        </button>
       </div>
     </div>
   );

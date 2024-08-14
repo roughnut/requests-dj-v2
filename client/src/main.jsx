@@ -12,7 +12,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 // Repeat for each different page
 import Login from './pages/Login';
 import Signup from './pages/Signup';
-import Events from './pages/Events.jsx';
+// import Events from './pages/Events.jsx';
 import Home from './pages/Home';
 import AddEvent from './components/AddEvent.jsx';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -41,10 +41,10 @@ const router = createBrowserRouter([
         path: '/signup',
         element: <Signup />,
       },
-      {
-        path: '/events',
-        element: <Events />,
-      },
+      // {
+      //   path: '/events',
+      //   element: <Events />,
+      // },
       {
         path: '/events/create_event',
         element: (<ProtectedRoute element={<AddEvent />} />),
@@ -63,7 +63,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/dashboard',
-        element: <Dashboard />,
+        element: (<ProtectedRoute element={<Dashboard />} />),
       }
     ],
   },
