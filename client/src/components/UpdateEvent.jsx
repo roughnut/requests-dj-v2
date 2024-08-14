@@ -3,6 +3,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { UPDATE_EVENT } from '../utils/mutations';
 import { GET_EVENT } from '../utils/queries';
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+
 
 const UpdateEvent = () => {
   const { id } = useParams(); // Get event ID from URL
@@ -24,16 +26,25 @@ const UpdateEvent = () => {
     if (data && data.event) {
       setName(data.event.name);
       setDescription(data.event.description);
-
+  
       // Handle date formatting
       const eventDate = data.event.date;
-      if (eventDate) {
-        // Try to parse and format date
-        const parsedDate = new Date(eventDate);
-        if (!isNaN(parsedDate.getTime())) {
-          setDate(parsedDate.toISOString().split('T')[0]); // Format date for the input? doesnt seem to be working.
-        }
-      }
+
+      console.log(eventDate);
+
+      const parsedDate = new Date(parseInt(eventDate, 10));
+      console.log("Parsed Date:", parsedDate);
+
+      const year = parsedDate.getFullYear();
+      const month = String(parsedDate.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+      const day = String(parsedDate.getDate()).padStart(2, '0');
+
+      console.log("Year:", year);   // Output: 2024
+      console.log("Month:", month); // Output: 08
+      console.log("Day:", day);     // Output: 24
+
+      const formattedDate = `${year}-${month}-${day}`;
+      setDate(formattedDate);
     }
   }, [data]);
 
@@ -55,7 +66,7 @@ const UpdateEvent = () => {
         },
       });
       alert('Event updated successfully');
-      navigate('/events');
+      navigate('/dashboard');
       window.location.reload();
     } catch (error) {
       console.error('Error:', error);
@@ -66,48 +77,62 @@ const UpdateEvent = () => {
   if (loading) return <p>Loading...</p>; // Loading state
   if (error) return <p>Error: {error.message}</p>; // Error state
 
+  console.log(name, description, date, data.event.date);
   return (
-    <div className="container mt-5">
-      <h2 className="text-center text-4xl font-weight-bold mb-4">Update Event</h2>
-      <form className="mx-auto" onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="event-title" className="form-label">Event Title:</label>
-          <input
-            type="text"
-            id="event-title"
-            className="form-control"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="event-desc" className="form-label">Event Description:</label>
-          <input
-            type="text"
-            id="event-desc"
-            className="form-control"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="event-date" className="form-label">Event Date:</label>
-          <input
-            type="date"
-            id="event-date"
-            className="form-control"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-          />
-        </div>
-        <button
-          type="submit"
-          className="btn btn-dark btn-lg w-100 mt-4"
-        >
-          Submit
-        </button>
-      </form>
-    </div>
+    <Container className="d-flex justify-content-center align-items-center">
+      <Row className="justify-content-center w-100">
+        <Col xs={12} md={8} lg={6}>
+          <div className="p-4 bg-light rounded-3 shadow">
+            <h1 className="display-4 text-center">Update your Event</h1>
+            <p className="lead text-center">Change any exisitng details from your event below.</p>
+            <Form onSubmit={handleSubmit}>
+              <Form.Group className="mb-4">
+                <Form.Label htmlFor="event-title">Event Title</Form.Label>
+                <Form.Control
+                  type="text"
+                  id="event-title"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  placeholder="Enter event title"
+                />
+              </Form.Group>
+              <Form.Group className="mb-4">
+                <Form.Label htmlFor="event-desc">Event Description</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={4}
+                  id="event-desc"
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  required
+                  placeholder="Describe your event"
+                />
+              </Form.Group>
+              <Form.Group className="mb-4">
+                <Form.Label htmlFor="event-date">Event Date</Form.Label>
+                <Form.Control
+                  type="date"
+                  id="event-date"
+                  value={date}
+                  onChange={(e) => setDate(e.target.value)}
+                  required
+                />
+              </Form.Group>
+              <Button
+                variant="primary"
+                type="submit"
+                className="w-100 mt-4"
+                size="lg"
+              >
+                Update Event
+              </Button>
+              {error && <p className="text-danger mt-2 text-center">{error}</p>}
+            </Form>
+          </div>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

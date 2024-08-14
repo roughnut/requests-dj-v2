@@ -54,10 +54,10 @@ const SongsList = () => {
   return (
     <div className="songs-list">
       <h2 className='songs-list-title'>Songs List</h2>
-      <div className="events-grid">
+      <div className="songs-grid">
         {songs.length > 0 ? (
           songs.map(song => (
-            <div className="col-12 mb-3" key={song._id}>
+            <div className='songs-song' key={song._id}>
               <Song song={song} refetch={refetch} />
             </div>
           ))

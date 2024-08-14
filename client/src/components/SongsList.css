@@ -1,5 +1,10 @@
 .songs-list {
-  width: 100%;
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: center; /* Center items horizontally */
+  margin: 0 auto; /* Center the container itself */
+  max-width: 100%; /* Ensure the container doesn’t exceed the viewport width */
+  padding: 0 20px; /* Optional: add padding if needed */
 }
 
 .songs-list-title {
@@ -8,8 +13,10 @@
 }
 
 .songs-grid {
-  display: list;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  display: flex;
+  flex-direction: column; /* Ensure items stack vertically */
+  align-items: center; /* Center items in the middle */
+  width: 100%; /* Ensure the grid takes the full width of the parent */
   gap: 20px;
 }
 
@@ -20,12 +27,14 @@
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease;
-  cursor: pointer;
+  max-width: 500px; /* Set max width */
+  height: 190px;
+  width: 100%; /* Allow the card to take full width up to max width */
 }
 
-.song-card:hover {
+/* .song-card:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
+} */
 
 .song-title {
   margin-top: 0;
@@ -33,24 +42,15 @@
   font-size: 1.4em;
 }
 
+.songs-song {
+  width: 500px;
+}
+
 .song-host,
 .song-artist,
 .song-votes {
   margin-bottom: 10px;
 }
-
-
-/* Unused Currently */
-/* .song-actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 15px;
-}
-
-.song-action-btn {
-  flex: 1;
-  margin: 0 5px;
-} */
 
 .loading,
 .error {
@@ -61,6 +61,10 @@
 
 @media (max-width: 768px) {
   .songs-grid {
-    grid-template-columns: 1fr;
+    width: 100%; /* Ensure the grid still takes full width */
+    padding: 0; /* Adjust padding for smaller screens */
+  }
+  .songs-song {
+    width: 300px;
   }
 }
