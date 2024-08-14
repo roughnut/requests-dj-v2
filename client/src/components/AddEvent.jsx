@@ -53,7 +53,7 @@ const AddEvent = () => {
       if (data?.addEvent) {
         // Update the global state with the new event
         setEvents([...state.events, data.addEvent]);
-        navigate('/events');
+        navigate('/dashboard');
         window.location.reload();
       } else {
         alert('Failed to add event. Please try again later.');

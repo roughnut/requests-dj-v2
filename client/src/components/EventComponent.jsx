@@ -6,7 +6,7 @@ import { REMOVE_EVENT } from "../utils/mutations";
 import { formatDate } from "../utils/formatDate";
 import { useSongContext } from "../utils/GlobalState";
 
-const EventComponent = ({ eventInfo }) => {
+const EventComponent = ({ eventInfo, username }) => {
   const { state } = useSongContext();
   const { user } = state;
   const userId = user ? user.data._id : null;
@@ -42,7 +42,9 @@ const EventComponent = ({ eventInfo }) => {
       onClick={handleBoxClick}
     >
       <h3 className="event-title">{eventInfo.name}</h3>
-      <p className="event-host">Hosted by {eventInfo.user?.username}</p>
+      <p className="event-host">
+        Hosted by {username}
+      </p>
       <p className="event-description">{eventInfo.description}</p>
       <p className="event-date">Date: {formatDate(eventInfo.date)}</p>
       {eventInfo.user?._id === userId && (

@@ -2,7 +2,7 @@ import React from 'react';
 import EventComponent from './EventComponent';
 import { useQuery } from '@apollo/client';
 import { GET_EVENTS } from '../utils/queries';
-import './EventList.css'; // We'll create this CSS file next
+import './EventList.css';
 
 const EventsList = ({ userId }) => {
   const { data, loading, error } = useQuery(GET_EVENTS);
