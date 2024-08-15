@@ -32,7 +32,7 @@ const Song = ({ song, onUpvote, refetch }) => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       refetch();
-    }, 30000); // Refetch every 30 seconds
+    }, 300000); // Refetch every 30 seconds
 
     return () => clearInterval(intervalId); // Cleanup interval on component unmount
   }, [refetch]);
