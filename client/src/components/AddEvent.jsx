@@ -31,6 +31,12 @@ const AddEvent = () => {
       return;
     }
 
+    if (new Date(date).getTime() < Date.now()) {
+      alert('Please select a date in the future.');
+      return;
+    }
+    
+
     try {
       const token = Auth.getToken();
       console.log('Sending request with token:', token);

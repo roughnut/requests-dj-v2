@@ -56,6 +56,11 @@ const UpdateEvent = () => {
       return;
     }
 
+    if (new Date(date).getTime() < Date.now()) {
+      alert('Please select a date in the future.');
+      return;
+    }
+
     try {
       await updateEvent({
         variables: {
