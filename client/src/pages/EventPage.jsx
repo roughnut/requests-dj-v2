@@ -41,10 +41,10 @@ const songRequests = songsData?.songRequests;
 
   return (
     <div>
-      <h2 className="text-4xl font-bold text-custom-charcoal">{event.name}</h2>
-      <p className="text-2xl font-bold">{event.description}</p>
+      <h2 className="">{event.name}</h2>
+      <p className="">{event.description}</p>
       <h4>DJ: {event.user.username}</h4>
-      <button className="btn btn-dark m-2" onClick={handleSongAdd}>
+      <button className="btn btn-primary m-2" onClick={handleSongAdd}>
         Request a Song
       </button>
       <SongsList eventId={id} />
