@@ -132,6 +132,7 @@ const AddEvent = () => {
                   value={date}
                   onChange={(e) => setDate(e.target.value)}
                   required
+                  min={new Date().toISOString().split('T')[0]} // Set minimum date to today
                 />
               </Form.Group>
               <Button
