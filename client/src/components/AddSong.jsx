@@ -58,28 +58,28 @@ const AddSong = () => {
       <Row className="justify-content-center w-100">
         <Col xs={12} md={8} lg={6}>
           <div className="p-4 bg-light rounded-3 shadow">
-            <h1 className="display-4 text-center">Request a Song</h1>
-            <p className="lead text-center">Fill out the form below to request a song for the event.</p>
+            <h2 className="display-4 text-center p-2">Song Request</h2>
+            {/* <p className="lead text-center">Fill out the form below to request a song for the event.</p> */}
             <Form onSubmit={handleSubmit}>
               <Form.Group className="mb-3">
-                <Form.Label htmlFor="song-title">Song Title</Form.Label>
+                <Form.Label htmlFor="song-title">Song Title & Artist</Form.Label>
                 <Form.Control
                   type="text"
                   id="song-title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   required
-                  placeholder="Enter song title"
+                  placeholder="Enter song title & artist"
                 />
               </Form.Group>
               <Form.Group className="mb-3">
-                <Form.Label htmlFor="song-artist">Song Artist</Form.Label>
+                <Form.Label htmlFor="song-artist">Your name</Form.Label>
                 <Form.Control
                   type="text"
                   id="song-artist"
                   value={artist}
                   onChange={(e) => setArtist(e.target.value)}
-                  placeholder="Enter artist name"
+                  placeholder="Enter your name"
                 />
               </Form.Group>
               <Button

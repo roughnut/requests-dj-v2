@@ -53,7 +53,7 @@ const SongsList = () => {
 
   return (
     <div className="songs-list">
-      <h2 className='songs-list-title'>Songs List</h2>
+      {/* <h2 className='songs-list-title'>Songs List</h2> */}
       <div className="songs-grid">
         {songs.length > 0 ? (
           songs.map(song => (
