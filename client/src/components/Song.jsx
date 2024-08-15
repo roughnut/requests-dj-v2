@@ -29,6 +29,14 @@ const Song = ({ song, onUpvote, refetch }) => {
     }
   }, [song, guestId]);
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      refetch();
+    }, 30000); // Refetch every 30 seconds
+
+    return () => clearInterval(intervalId); // Cleanup interval on component unmount
+  }, [refetch]);
+
   const handleUpvote = async () => {
     if (!guestId) {
       console.error('No guestId found. Unable to upvote.');
@@ -123,7 +131,6 @@ const Song = ({ song, onUpvote, refetch }) => {
         {/* {hasUpvoted ? "Unvote" : "Upvote"} */}
       </button>
       <p className="song-votes">Votes: {upvotes}</p>
-
     </div>
   );
 };
@@ -136,7 +143,7 @@ Song.propTypes = {
     upvotes: PropTypes.number,
   }).isRequired,
   onUpvote: PropTypes.func,
-  addUpvote: PropTypes.func,
+  refetch: PropTypes.func.isRequired,
 };
 
 export default Song;
