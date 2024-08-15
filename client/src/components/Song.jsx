@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { FaThumbsUp } from 'react-icons/fa';
+import { FaThumbsUp, FaThumbsDown } from 'react-icons/fa';
 import { useMutation } from '@apollo/client';
 import { ADD_UPVOTE, REMOVE_UPVOTE } from '../utils/mutations';
 
-const Song = ({ song, onUpvote, addUpvote, refetch }) => {
+const Song = ({ song, onUpvote, refetch }) => {
   const [upvotes, setUpvotes] = useState(song?.upvotes || 0);
   const [hasUpvoted, setHasUpvoted] = useState(false);
   const [guestId, setGuestId] = useState(null);
@@ -105,9 +105,6 @@ const Song = ({ song, onUpvote, addUpvote, refetch }) => {
 
   const handleButtonClick = async () => {
     await handleUpvote();
-    // if (addUpvote) {
-    //   addUpvote(song._id);
-    // }
   };
 
   if (!song) {
@@ -118,13 +115,15 @@ const Song = ({ song, onUpvote, addUpvote, refetch }) => {
     <div className="song-card">
       <header className="song-title">{song.title}</header>
       <p className="song-artist">&nbsp;{song.artist}</p>
-      <p className="song-votes">Votes: {upvotes}</p>
       <button
-        className={`btn ${hasUpvoted ? 'btn-success' : 'btn-dark'}`}
+        className={`btn ${hasUpvoted ? "btn-dark" : "btn-success"}`}
         onClick={handleButtonClick}
       >
-        <FaThumbsUp /> {hasUpvoted ? 'Unvote' : 'Upvote'}
+        {hasUpvoted ? <FaThumbsDown /> : <FaThumbsUp />}{" "}
+        {/* {hasUpvoted ? "Unvote" : "Upvote"} */}
       </button>
+      <p className="song-votes">Votes: {upvotes}</p>
+
     </div>
   );
 };
